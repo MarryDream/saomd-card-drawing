@@ -1,0 +1,35 @@
+html,
+body {
+    margin  : 0;
+    padding : 0;
+    height  : 100%;
+    position: relative;
+    z-index : -4;
+}
+
+#app {
+    height  : 100%;
+    position: relative;
+    z-index : -3;
+}
+
+button {
+    margin : 0;
+    padding: 0;
+    border : 1px solid transparent;
+    outline: none;
+}
+
+.clearfix::before,
+.clearfix::after {
+    content: "";
+    display: table;
+}
+
+.clearfix::after {
+    clear: both;
+}
+
+.clearfix {
+    *zoom: 1;
+}
