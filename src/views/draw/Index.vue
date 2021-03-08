@@ -1,7 +1,8 @@
 <template>
   <div class="draw-container">
-    <SaomdDraw />
-    <package />
+    <router-view />
+    <!-- <SaomdDraw />
+    <package /> -->
   </div>
 </template>
 

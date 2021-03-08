@@ -50,6 +50,7 @@ export default {
     },
 
     lotteryDraw(item = 1) {
+      this.$router.push('/draw/result')
       const mutationMethod = this.poolType === 'character' ? 'addChara' : 'addWeapon'
       this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType))
     },
