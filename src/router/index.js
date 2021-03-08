@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Saomd from '../components/Saomd.vue'
-import Test from '../components/Test.vue'
+import SaomdDraw from '@/views/draw/Index.vue'
+import Test from '@/components/Test.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', component: Saomd },
+  { path: '/', component: SaomdDraw },
   { path: '/test', component: Test }
 ]
 

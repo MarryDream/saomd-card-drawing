@@ -1,119 +1,175 @@
 <template>
-  <div class="darw-base" @mouseup="oneImg=1;elevenImg=1">
-    <div class="darw-contain">
-      <div class="darw-title">
+  <div class="draw-base">
+    <div class="draw-contain">
+      <div class="draw-title">
         <div class="pool-title">
           <img src="/img/icon/scout.png" alt />
         </div>
       </div>
-      <div class="darw-pool">
+      <div class="draw-pool">
         <div class="pool-title">
-          <label v-for="(item,index) of categoryList" :key="index" class="select-pool">
+          <label
+            v-for="(item, index) of categoryList"
+            :key="index"
+            class="select-pool"
+          >
             <input
               type="radio"
               :value="item.name"
               v-model="category"
               @change="poolTitleChange(item.name)"
             />
-            <span :class="item.name">{{`${item.value}(${item.num})`}}</span>
+            <span :class="item.name">{{ `${item.value}(${item.num})` }}</span>
           </label>
         </div>
         <div class="pool">
-          <div class="pools">
+          <div class="pools" :class="{poolTransition: isTransition}" ref="poolsRef">
             <img
-              v-for="(item,index) of poolList"
+              v-for="(item, index) of poolList"
               :key="index"
-              :class="item.active?'active':'default'"
+              class="pools-image"
+              :class="{active: item.active, poolTransition: isTransition}"
               :src="`/img/pool/${item.name}.png`"
               draggable="false"
               alt
             />
           </div>
-          <img class="arrow left" src="/img/icon/arrow.png" draggable="false" alt />
-          <img class="arrow right" src="/img/icon/arrow.png" draggable="false" alt />
+          <img
+            v-if="leftArrowFlag"
+            class="arrow left"
+            src="/img/icon/arrow.png"
+            draggable="false"
+            alt
+            @click="arrowHandle()"
+          />
+          <img
+            v-if="rightArrowFlag"
+            class="arrow right"
+            src="/img/icon/arrow.png"
+            draggable="false"
+            alt
+            @click="arrowHandle('right')"
+          />
         </div>
         <button class="details">出現角色一覽/説明</button>
       </div>
-      <div class="darw-footer">
-        <a class="one" @mousedown="oneImg=2">
-          <img :src="`/img/icon/button_lottery_1_${oneImg}.png`" width="238" alt draggable="false" />
-        </a>
-        <a class="eleven" @mousedown="elevenImg=2">
-          <img
-            :src="`/img/icon/button_lottery_2_${elevenImg}.png`"
-            width="238"
-            alt
-            draggable="false"
-          />
-        </a>
-      </div>
+      <Footer :poolType='poolType' />
     </div>
   </div>
 </template>
 <script>
+import {mapState} from 'vuex'
+import Footer from '@/components/DrawFooter/Index'
 export default {
+  components: {
+    'Footer': Footer
+  },
   data() {
-    return {
-      oneImg: 1,
-      elevenImg: 1,
-      categoryList: [
-        { name: 'all', value: '全部', num: 2 },
-        { name: 'chara', value: '角色', num: 1 },
-        { name: 'weapon', value: '武器', num: 1 },
-      ],
+    return {    
       category: 'all',
-      charaPoolList: [{ name: 'chara', active: true }],
-      weaponPoolList: [{ name: 'weapon', active: false }],
+      charaPoolList: [
+        {type: 'character', name: 'chara', active: false},
+      ],
+      weaponPoolList: [{type: 'weapon', name: 'weapon', active: false}],
       allPoolList: [],
       poolList: [],
-    };
+      categoryList: [],
+      activeIndex: 0, // 当前显示的图片在数组中的序号
+      isTransition: true, // 是否拥有过度效果
+      poolType: ''
+    }
   },
   methods: {
     poolTitleChange(name) {
+      this.isTransition = false
       switch (name) {
         case 'all':
-          this.poolList = this.allPoolList;
-          break;
+          this.poolList = this.allPoolList
+          break
         case 'chara':
-          this.poolList = this.charaPoolList;
-          break;
+          this.poolList = this.charaPoolList
+          break
         case 'weapon':
-          this.poolList = this.weaponPoolList;
-          break;
+          this.poolList = this.weaponPoolList
+          break
       }
+    },
+    
+    arrowHandle(direct = 'left') {
+      this.activeIndex = direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
+      this.poolType = this.poolList[this.activeIndex].type
+      this.$refs.poolsRef.style.transform = `translateX(${-260 * this.activeIndex}px)`
+      this.initPoolArr(this.poolList)
+    },
+
+    initPoolArr(poolList){
+      poolList.forEach((item) => {
+        item.active = false
+      })
+      poolList[this.activeIndex].active = true
+    }
+  },
+  computed: {
+    ...mapState('draw', {drawChara: 'chara'}),
+    rightArrowFlag: function () {
+      return this.activeIndex !== this.poolList.length - 1
+    },
+    leftArrowFlag: function () {
+      return this.activeIndex !== 0
+    },
+  },
+  watch: {
+    poolList: function (val) {
+      this.activeIndex = 0
+      this.poolType = this.poolList[this.activeIndex].type
+      this.$refs.poolsRef.style.transform = ''
+      this.initPoolArr(val)
+      this.$refs.poolsRef.style.width = `width:${
+        (240 + 20) * (this.poolList.length - 1) + 507
+      }px`
+      setTimeout(() => {
+        this.isTransition = true
+      }, 400);
     },
   },
   mounted() {
-    this.allPoolList = [...this.charaPoolList, ...this.weaponPoolList];
-    this.poolList = this.allPoolList;
+    this.allPoolList = [...this.charaPoolList, ...this.weaponPoolList]
+    this.poolList = this.allPoolList
+    this.categoryList = [
+      {name: 'all', value: '全部', num: this.allPoolList.length},
+      {name: 'chara', value: '角色', num: this.charaPoolList.length},
+      {name: 'weapon', value: '武器', num: this.weaponPoolList.length},
+    ]
   },
-};
+}
 </script>
-<style lang="less" scoped>
-.darw-base {
-  min-height: 100%;
-  padding-top: 20px;
-  background: url('/img/background.jpg') fixed center center no-repeat;
-  box-sizing: border-box;
+<style lang="scss" scoped>
+.draw-base {
+  width: 495px;
   position: relative;
+  overflow: hidden;
   user-select: none;
-  z-index: -2;
-  > .darw-contain {
-    width: 495px;
-    margin: 0 auto;
-    position: relative;
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+  }
+  &::before {
+    background: url('/img/draw-bg.png') -80px no-repeat;
+    background-size: cover;
+  }
+  &::after {
     background-color: rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    &::before {
-      content: '';
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: url('/img/draw-bg.png') -80px no-repeat;
-      background-size: cover;
-      z-index: -1;
-    }
-    > .darw-title {
+    z-index: 1;
+  }
+  > .draw-contain {
+    position: relative;
+    z-index: 2;
+    > .draw-title {
       height: 83px;
       overflow: hidden;
       > .pool-title {
@@ -126,7 +182,7 @@ export default {
         }
       }
     }
-    > .darw-pool {
+    > .draw-pool {
       height: 602px;
       text-align: center;
       > .pool-title {
@@ -189,12 +245,17 @@ export default {
         > .pools {
           height: 507px;
           width: 200%;
-          margin-left: 25px;
-          > img {
+          margin-left: 45px;
+          > .pools-image {
             float: left;
-            // width: 240px;
-            width: 405px;
+            width: 240px;
             margin-left: 20px;
+          }
+          > .pools-image:first-child {
+            margin-left: 0;
+          }
+          > .active {
+            width: 405px;
           }
         }
         > .arrow {
@@ -234,20 +295,15 @@ export default {
         }
       }
     }
-    > .darw-footer {
-      height: 195px;
-      text-align: center;
-      padding: 20px 0;
-      box-sizing: border-box;
-      a {
-        display: inline-block;
-        cursor: pointer;
-      }
-    }
   }
 }
+
+.poolTransition{
+  transition: all 0.4s;
+}
+
 @keyframes previous {
-  form {
+  from {
     left: 0;
   }
   to {
@@ -255,7 +311,7 @@ export default {
   }
 }
 @keyframes next {
-  form {
+  from {
     right: 0;
   }
   to {
