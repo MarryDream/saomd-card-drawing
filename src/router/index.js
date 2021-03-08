@@ -13,12 +13,15 @@ const routes = [
   {
     path: '/draw', component: Draw, children: [
       {
-        path: 'pool',
+        path: '/draw/pool',
+        name: 'pool',
         component: Pool,
       },
       {
-        path: 'result',
+        path: '/draw/result/:poolType',
+        name: 'result',
         component: Result,
+        props: true,
       }
     ]
   },

@@ -62,7 +62,7 @@ import {mapState} from 'vuex'
 import Footer from '@/components/DrawFooter/Index'
 export default {
   components: {
-    'Footer': Footer
+    Footer,
   },
   data() {
     return {    

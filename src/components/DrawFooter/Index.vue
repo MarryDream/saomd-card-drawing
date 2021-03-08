@@ -20,43 +20,46 @@
 </template>
 
 <script>
-import draw from '@/utils/draw'
+import draw from '@/utils/draw';
 export default {
   props: {
     poolType: {
       type: String,
-      default: 'character'
-      }
+      default: 'character',
+    },
   },
   data() {
     return {
       oneImg: 1,
       elevenImg: 1,
-    }
+    };
   },
 
   mounted() {
-    window.addEventListener('mouseup', this.imgButton)
+    window.addEventListener('mouseup', this.imgButton);
   },
 
   beforeDestroy() {
-    window.removeEventListener('mouseup', this.imgButton)
+    window.removeEventListener('mouseup', this.imgButton);
   },
 
   methods: {
     imgButton() {
-      if (this.oneImg === 1 && this.elevenImg === 1) return
-      [this.oneImg, this.elevenImg] = [1, 1]
+      if (this.oneImg === 1 && this.elevenImg === 1) return;
+      [this.oneImg, this.elevenImg] = [1, 1];
     },
 
     lotteryDraw(item = 1) {
-      this.$router.push('/draw/result')
-      const mutationMethod = this.poolType === 'character' ? 'addChara' : 'addWeapon'
-      this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType))
+      this.$router.push({
+        name: 'result',
+        params: { poolType: this.poolType },
+      });
+      const mutationMethod =
+        this.poolType === 'character' ? 'addChara' : 'addWeapon';
+      this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType));
     },
-
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>

@@ -11031,6 +11031,18 @@
           "dev": true,
           "optional": true
         },
+<<<<<<< HEAD
+        "source-map": {
+          "version": "0.6.1",
+          "resolved": "https://registry.npm.taobao.org/source-map/download/source-map-0.6.1.tgz",
+          "integrity": "sha1-dHIq8y6WFOnCh6jQu95IteLxomM=",
+          "dev": true,
+          "optional": true
+        },
+        "supports-color": {
+          "version": "7.2.0",
+          "resolved": "https://registry.npm.taobao.org/supports-color/download/supports-color-7.2.0.tgz?cache=0&sync_timestamp=1598611719015&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsupports-color%2Fdownload%2Fsupports-color-7.2.0.tgz",
+=======
         "loader-utils": {
           "version": "2.0.0",
           "resolved": "https://registry.npm.taobao.org/loader-utils/download/loader-utils-2.0.0.tgz",
@@ -11046,6 +11058,7 @@
         "supports-color": {
           "version": "7.2.0",
           "resolved": "https://registry.npm.taobao.org/supports-color/download/supports-color-7.2.0.tgz?cache=0&sync_timestamp=1611394043517&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fsupports-color%2Fdownload%2Fsupports-color-7.2.0.tgz",
+>>>>>>> 97becb2 (添加结果页图标)
           "integrity": "sha1-G33NyzK4E4gBs+R4umpRyqiWSNo=",
           "dev": true,
           "optional": true,
