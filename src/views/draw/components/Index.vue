@@ -3,7 +3,7 @@
     <div class="draw-contain">
       <div class="draw-title">
         <div class="pool-title">
-          <img src="/img/icon/scout.png" alt />
+          <img src="/img/icon/scout.png" alt draggable="false" />
         </div>
       </div>
       <div class="draw-pool">
@@ -95,6 +95,7 @@ export default {
       }
     },
     
+    // 左右点击事件
     arrowHandle(direct = 'left') {
       this.activeIndex = direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
       this.poolType = this.poolList[this.activeIndex].type
@@ -102,6 +103,7 @@ export default {
       this.initPoolArr(this.poolList)
     },
 
+    // 切换设置当前卡池active状态
     initPoolArr(poolList){
       poolList.forEach((item) => {
         item.active = false

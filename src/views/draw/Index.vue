@@ -1,24 +1,33 @@
 <template>
   <div class="draw-container">
-    <router-view />
+    <component :is="componentName" :poolType="poolType"></component>
     <!-- <SaomdDraw />
     <package /> -->
   </div>
 </template>
 
 <script>
-import SaomdDraw from './components/Index'
-import Package from './components/Package'
+import Pool from './components/Index';
+import Result from './components/Package';
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    SaomdDraw,
-    Package
+    Pool,
+    Result,
   },
   data() {
-    return {}
-  }
-}
+    return {};
+  },
+  computed: {
+    ...mapState({
+      poolType: (state) => state.draw.poolType,
+    }),
+    componentName() {
+      return this.poolType ? 'Result' : 'Pool';
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

@@ -9,22 +9,23 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', redirect: '/draw' },
-  { path: '/draw', redirect: '/draw/pool' },
-  {
-    path: '/draw', component: Draw, children: [
-      {
-        path: '/draw/pool',
-        name: 'pool',
-        component: Pool,
-      },
-      {
-        path: '/draw/result/:poolType',
-        name: 'result',
-        component: Result,
-        props: true,
-      }
-    ]
-  },
+  { path: '/draw', component: Draw },
+  // { path: '/draw', redirect: '/draw/pool' },
+  // {
+  //   path: '/draw', component: Draw, children: [
+  //     {
+  //       path: '/draw/pool',
+  //       name: 'pool',
+  //       component: Pool,
+  //     },
+  //     {
+  //       path: '/draw/result/:poolType',
+  //       name: 'result',
+  //       component: Result,
+  //       props: true,
+  //     }
+  //   ]
+  // },
   {
     path: '/test', component: Test
   }

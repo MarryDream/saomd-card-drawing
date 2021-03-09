@@ -44,19 +44,21 @@ export default {
   },
 
   methods: {
+    // 全局监控鼠标谈起事件，还原图片状态
     imgButton() {
       if (this.oneImg === 1 && this.elevenImg === 1) return;
       [this.oneImg, this.elevenImg] = [1, 1];
     },
 
     lotteryDraw(item = 1) {
-      this.$router.push({
-        name: 'result',
-        params: { poolType: this.poolType },
-      });
+      // this.$router.push({
+      //   name: 'result',
+      //   params: { poolType: this.poolType },
+      // });
       const mutationMethod =
         this.poolType === 'character' ? 'addChara' : 'addWeapon';
       this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType));
+      this.$store.commit(`draw/changePoolType`, this.poolType);
     },
   },
 };

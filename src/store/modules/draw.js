@@ -1,7 +1,8 @@
 const getDefaultState = () => {
   return {
     chara: [],
-    weapon: []
+    weapon: [],
+    poolType: '',
   }
 }
 
@@ -16,6 +17,9 @@ const mutations = {
     // state.weapon = state.weapon.concat(newWeapon)
     state.weapon = newWeapon
   },
+  changePoolType: (state, newType) => {
+    state.poolType = newType
+  }
 }
 
 export default {
