@@ -9,7 +9,7 @@
       <div class="result-pool">
         <div class="pool-contain">
           <div :key="index" v-for="(item, index) in drawList" class="card">
-            <img :src="`/img/chara/character_frame_${item}.png`" alt="" />
+            <img :src="`/img/chara/character_frame_${item}.png`" alt />
           </div>
         </div>
       </div>
@@ -19,32 +19,32 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
-import Footer from '@/components/DrawFooter/Index';
+import { mapState } from 'vuex'
+import Footer from '@/components/DrawFooter/Index'
 export default {
   props: {
     poolType: {
       type: String,
-      default: 'character',
-    },
+      default: 'character'
+    }
   },
   components: {
-    Footer,
+    Footer
   },
   computed: {
     ...mapState({
-      drawChara: (state) => state.draw.chara,
-      drawWeapon: (state) => state.draw.weapon,
+      drawChara: state => state.draw.chara,
+      drawWeapon: state => state.draw.weapon
     }),
     drawList() {
       return this.poolType === 'character'
         ? this.drawChara
         : this.poolType === 'weapon'
         ? this.drawWeapon
-        : [];
-    },
-  },
-};
+        : []
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -87,16 +87,16 @@ export default {
       }
     }
     > .result-pool {
-    height: 592px;
-    margin-top: 10px;
-    text-align: center;
-    .card {
-      display: inline-block;
+      height: 592px;
+      margin-top: 10px;
+      text-align: center;
+      .card {
+        display: inline-block;
+      }
+      img {
+        width: 100px;
+      }
     }
-    img {
-      width: 100px;
-    }
-  }
   }
 }
 </style>

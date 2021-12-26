@@ -1,12 +1,8 @@
-const getDefaultState = () => {
-  return {
-    chara: [],
-    weapon: [],
-    poolType: '',
-  }
+const state = {
+  chara: [],
+  weapon: [],
+  poolType: ''
 }
-
-const state = getDefaultState()
 
 const mutations = {
   addChara: (state, newChara) => {
@@ -27,4 +23,3 @@ export default {
   state,
   mutations
 }
-

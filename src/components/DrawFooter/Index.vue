@@ -1,53 +1,43 @@
 <template>
   <div class="saomd-footer">
     <a class="one" @mousedown="oneImg = 2" @click="lotteryDraw()">
-      <img
-        :src="`/img/icon/lottery_${poolType}_1_${oneImg}.png`"
-        width="238"
-        alt
-        draggable="false"
-      />
+      <img :src="`/img/icon/lottery_${poolType}_1_${oneImg}.png`" width="238" alt draggable="false" />
     </a>
     <a class="eleven" @mousedown="elevenImg = 2" @click="lotteryDraw(11)">
-      <img
-        :src="`/img/icon/lottery_${poolType}_2_${elevenImg}.png`"
-        width="238"
-        alt
-        draggable="false"
-      />
+      <img :src="`/img/icon/lottery_${poolType}_2_${elevenImg}.png`" width="238" alt draggable="false" />
     </a>
   </div>
 </template>
 
 <script>
-import draw from '@/utils/draw';
+import draw from '@/utils/draw'
 export default {
   props: {
     poolType: {
       type: String,
-      default: 'character',
-    },
+      default: 'character'
+    }
   },
   data() {
     return {
       oneImg: 1,
-      elevenImg: 1,
-    };
+      elevenImg: 1
+    }
   },
 
   mounted() {
-    window.addEventListener('mouseup', this.imgButton);
+    window.addEventListener('mouseup', this.imgButton)
   },
 
   beforeDestroy() {
-    window.removeEventListener('mouseup', this.imgButton);
+    window.removeEventListener('mouseup', this.imgButton)
   },
 
   methods: {
     // 全局监控鼠标谈起事件，还原图片状态
     imgButton() {
-      if (this.oneImg === 1 && this.elevenImg === 1) return;
-      [this.oneImg, this.elevenImg] = [1, 1];
+      if (this.oneImg === 1 && this.elevenImg === 1) return
+      ;[this.oneImg, this.elevenImg] = [1, 1]
     },
 
     lotteryDraw(item = 1) {
@@ -56,12 +46,12 @@ export default {
       //   params: { poolType: this.poolType },
       // });
       const mutationMethod =
-        this.poolType === 'character' ? 'addChara' : 'addWeapon';
-      this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType));
-      this.$store.commit(`draw/changePoolType`, this.poolType);
-    },
-  },
-};
+        this.poolType === 'character' ? 'addChara' : 'addWeapon'
+      this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType))
+      this.$store.commit(`draw/changePoolType`, this.poolType)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

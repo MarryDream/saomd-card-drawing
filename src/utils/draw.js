@@ -23,27 +23,27 @@ const weaponStar = [4, 3, 2]
 const weaponChance = [0.04, 0.29, 1]
 
 function randomDraw(chanceArray, starArry) {
-    const random = Math.random()
-    if (random < Math.min.apply(null, chanceArray)) {
-        return starArry[0]
-    }
+  const random = Math.random()
+  if (random < Math.min.apply(null, chanceArray)) {
+    return starArry[0]
+  }
 
-    let star = 2
-    for (let i = 1; i < chanceArray.length; i++) {
-        if (chanceArray[i] > random) {
-            star = starArry[i]
-            break
-        }
+  let star = 2
+  for (let i = 1; i < chanceArray.length; i++) {
+    if (chanceArray[i] > random) {
+      star = starArry[i]
+      break
     }
-    return star
+  }
+  return star
 }
 
 export default (time = 1, type = 'character') => {
-    const arr = []
-    const chanceArr = type === 'character' ? charaChance : weaponChance
-    const starArr = type === 'character' ? charaStar : weaponStar
-    for (let index = 0; index < time; index++) {
-        arr.push(randomDraw(chanceArr, starArr))
-    }
-    return arr
+  const arr = []
+  const chanceArr = type === 'character' ? charaChance : weaponChance
+  const starArr = type === 'character' ? charaStar : weaponStar
+  for (let index = 0; index < time; index++) {
+    arr.push(randomDraw(chanceArr, starArr))
+  }
+  return arr
 }

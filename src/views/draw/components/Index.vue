@@ -8,69 +8,36 @@
       </div>
       <div class="draw-pool">
         <div class="pool-title">
-          <label
-            v-for="(item, index) of categoryList"
-            :key="index"
-            class="select-pool"
-          >
-            <input
-              type="radio"
-              :value="item.name"
-              v-model="category"
-              @change="poolTitleChange(item.name)"
-            />
+          <label v-for="(item, index) of categoryList" :key="index" class="select-pool">
+            <input type="radio" :value="item.name" v-model="category" @change="poolTitleChange(item.name)" />
             <span :class="item.name">{{ `${item.value}(${item.num})` }}</span>
           </label>
         </div>
         <div class="pool">
-          <div class="pools" :class="{poolTransition: isTransition}" ref="poolsRef">
-            <img
-              v-for="(item, index) of poolList"
-              :key="index"
-              class="pools-image"
-              :class="{active: item.active, poolTransition: isTransition}"
-              :src="`/img/pool/${item.name}.png`"
-              draggable="false"
-              alt
-            />
+          <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
+            <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="`/img/pool/${item.name}.png`" draggable="false" alt />
           </div>
-          <img
-            v-if="leftArrowFlag"
-            class="arrow left"
-            src="/img/icon/arrow.png"
-            draggable="false"
-            alt
-            @click="arrowHandle()"
-          />
-          <img
-            v-if="rightArrowFlag"
-            class="arrow right"
-            src="/img/icon/arrow.png"
-            draggable="false"
-            alt
-            @click="arrowHandle('right')"
-          />
+          <img v-if="leftArrowFlag" class="arrow left" src="/img/icon/arrow.png" draggable="false" alt @click="arrowHandle()" />
+          <img v-if="rightArrowFlag" class="arrow right" src="/img/icon/arrow.png" draggable="false" alt @click="arrowHandle('right')" />
         </div>
         <button class="details">出現角色一覽/説明</button>
       </div>
-      <Footer :poolType='poolType' />
+      <Footer :poolType="poolType" />
     </div>
   </div>
 </template>
 <script>
-import {mapState} from 'vuex'
+import { mapState } from 'vuex'
 import Footer from '@/components/DrawFooter/Index'
 export default {
   components: {
-    Footer,
+    Footer
   },
   data() {
-    return {    
+    return {
       category: 'all',
-      charaPoolList: [
-        {type: 'character', name: 'chara', active: false},
-      ],
-      weaponPoolList: [{type: 'weapon', name: 'weapon', active: false}],
+      charaPoolList: [{ type: 'character', name: 'chara', active: false }],
+      weaponPoolList: [{ type: 'weapon', name: 'weapon', active: false }],
       allPoolList: [],
       poolList: [],
       categoryList: [],
@@ -94,31 +61,34 @@ export default {
           break
       }
     },
-    
+
     // 左右点击事件
     arrowHandle(direct = 'left') {
-      this.activeIndex = direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
+      this.activeIndex =
+        direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
       this.poolType = this.poolList[this.activeIndex].type
-      this.$refs.poolsRef.style.transform = `translateX(${-260 * this.activeIndex}px)`
+      this.$refs.poolsRef.style.transform = `translateX(${
+        -260 * this.activeIndex
+      }px)`
       this.initPoolArr(this.poolList)
     },
 
     // 切换设置当前卡池active状态
-    initPoolArr(poolList){
-      poolList.forEach((item) => {
+    initPoolArr(poolList) {
+      poolList.forEach(item => {
         item.active = false
       })
       poolList[this.activeIndex].active = true
     }
   },
   computed: {
-    ...mapState('draw', {drawChara: 'chara'}),
+    ...mapState('draw', { drawChara: 'chara' }),
     rightArrowFlag: function () {
       return this.activeIndex !== this.poolList.length - 1
     },
     leftArrowFlag: function () {
       return this.activeIndex !== 0
-    },
+    }
   },
   watch: {
     poolList: function (val) {
@@ -131,18 +101,18 @@ export default {
       }px`
       setTimeout(() => {
         this.isTransition = true
-      }, 400);
-    },
+      }, 400)
+    }
   },
   mounted() {
     this.allPoolList = [...this.charaPoolList, ...this.weaponPoolList]
     this.poolList = this.allPoolList
     this.categoryList = [
-      {name: 'all', value: '全部', num: this.allPoolList.length},
-      {name: 'chara', value: '角色', num: this.charaPoolList.length},
-      {name: 'weapon', value: '武器', num: this.weaponPoolList.length},
+      { name: 'all', value: '全部', num: this.allPoolList.length },
+      { name: 'chara', value: '角色', num: this.charaPoolList.length },
+      { name: 'weapon', value: '武器', num: this.weaponPoolList.length }
     ]
-  },
+  }
 }
 </script>
 <style lang="scss" scoped>
@@ -300,7 +270,7 @@ export default {
   }
 }
 
-.poolTransition{
+.poolTransition {
   transition: all 0.4s;
 }
 
