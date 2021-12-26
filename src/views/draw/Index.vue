@@ -26,9 +26,6 @@ export default {
     componentName() {
       return this.poolType ? 'Result' : 'Pool'
     }
-  },
-  created() {
-    this.$store.dispatch('imageInfo/initImgInfo')
   }
 }
 </script>

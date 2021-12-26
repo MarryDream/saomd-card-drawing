@@ -41,7 +41,7 @@ const actions = {
             }
             commit('SET_ALL_IMG_INFO', allImageInfo)
             setAllImageInfo(allImageInfo)
-            resolve(info)
+            resolve(allImageInfo)
           })
           .catch(err => {
             reject(err)
