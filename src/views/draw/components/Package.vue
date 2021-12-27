@@ -19,30 +19,22 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
 import Footer from '@/components/DrawFooter/Index'
+
 export default {
   props: {
     poolType: {
       type: String,
       default: 'character'
+    },
+    // 抽卡结果列表
+    drawList: {
+      type: Array,
+      default: () => []
     }
   },
   components: {
     Footer
-  },
-  computed: {
-    ...mapState({
-      drawChara: state => state.draw.chara,
-      drawWeapon: state => state.draw.weapon
-    }),
-    drawList() {
-      return this.poolType === 'character'
-        ? this.drawChara
-        : this.poolType === 'weapon'
-        ? this.drawWeapon
-        : []
-    }
   }
 }
 </script>

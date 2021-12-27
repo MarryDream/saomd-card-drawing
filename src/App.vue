@@ -1,11 +1,15 @@
 <template>
   <div id="app">
-    <router-view />
+    <Draw />
   </div>
 </template>
 
 <script>
+import Draw from '@/views/draw'
 export default {
+  components: {
+    Draw
+  },
   data() {
     return {}
   }

@@ -11,6 +11,8 @@
 
 <script>
 import draw from '@/utils/draw'
+import { eventBus } from '@/utils/eventBus'
+
 export default {
   props: {
     poolType: {
@@ -41,14 +43,8 @@ export default {
     },
 
     lotteryDraw(item = 1) {
-      // this.$router.push({
-      //   name: 'result',
-      //   params: { poolType: this.poolType },
-      // });
-      const mutationMethod =
-        this.poolType === 'character' ? 'addChara' : 'addWeapon'
-      this.$store.commit(`draw/${mutationMethod}`, draw(item, this.poolType))
-      this.$store.commit(`draw/changePoolType`, this.poolType)
+      eventBus.$emit('addLottery', draw(item, this.poolType))
+      eventBus.$emit('changePoolType', this.poolType)
     }
   }
 }

@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-import { mapState } from 'vuex'
 import Footer from '@/components/DrawFooter/Index'
 export default {
   components: {
@@ -64,12 +63,9 @@ export default {
 
     // 左右点击事件
     arrowHandle(direct = 'left') {
-      this.activeIndex =
-        direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
+      this.activeIndex = direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
       this.poolType = this.poolList[this.activeIndex].type
-      this.$refs.poolsRef.style.transform = `translateX(${
-        -260 * this.activeIndex
-      }px)`
+      this.$refs.poolsRef.style.transform = `translateX(${-260 * this.activeIndex}px)`
       this.initPoolArr(this.poolList)
     },
 
@@ -82,7 +78,6 @@ export default {
     }
   },
   computed: {
-    ...mapState('draw', { drawChara: 'chara' }),
     rightArrowFlag: function () {
       return this.activeIndex !== this.poolList.length - 1
     },
@@ -96,9 +91,7 @@ export default {
       this.poolType = this.poolList[this.activeIndex].type
       this.$refs.poolsRef.style.transform = ''
       this.initPoolArr(val)
-      this.$refs.poolsRef.style.width = `width:${
-        (240 + 20) * (this.poolList.length - 1) + 507
-      }px`
+      this.$refs.poolsRef.style.width = `width:${(240 + 20) * (this.poolList.length - 1) + 507}px`
       setTimeout(() => {
         this.isTransition = true
       }, 400)
