@@ -18,6 +18,13 @@ export default {
     poolType: {
       type: String,
       default: 'character'
+    },
+    // 全部图片信息
+    allImageInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
     }
   },
   data() {
@@ -42,8 +49,8 @@ export default {
       ;[this.oneImg, this.elevenImg] = [1, 1]
     },
 
-    lotteryDraw(item = 1) {
-      eventBus.$emit('addLottery', draw(item, this.poolType))
+    lotteryDraw(time = 1) {
+      eventBus.$emit('addLottery', draw(this.allImageInfo, this.poolType, time))
       eventBus.$emit('changePoolType', this.poolType)
     }
   }

@@ -22,7 +22,7 @@
         </div>
         <button class="details">出現角色一覽/説明</button>
       </div>
-      <Footer :poolType="poolType" />
+      <Footer :poolType="poolType" :allImageInfo="allImageInfo" />
     </div>
   </div>
 </template>
@@ -31,6 +31,15 @@ import Footer from '@/components/DrawFooter/Index'
 export default {
   components: {
     Footer
+  },
+  props: {
+    // 全部图片信息
+    allImageInfo: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    }
   },
   data() {
     return {

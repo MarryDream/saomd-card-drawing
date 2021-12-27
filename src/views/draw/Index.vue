@@ -1,6 +1,6 @@
 <template>
   <div class="draw-container">
-    <component :is="componentName" :poolType="poolType" :drawList="drawList"></component>
+    <component :is="componentName" :poolType="poolType" :drawList="drawList" :allImageInfo="allImageInfo"></component>
     <!-- <SaomdDraw />
     <package />-->
   </div>
@@ -20,7 +20,9 @@ export default {
   data() {
     return {
       poolType: '',
-      drawList: ''
+      drawList: '',
+      // 全部图片信息
+      allImageInfo: {}
     }
   },
   mounted() {
