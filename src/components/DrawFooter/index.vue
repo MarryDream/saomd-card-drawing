@@ -1,10 +1,10 @@
 <template>
   <div class="saomd-footer">
     <a class="one" @mousedown="oneImg = 2" @click="lotteryDraw()">
-      <img :src="`/img/icon/lottery_${poolType}_1_${oneImg}.png`" width="238" alt draggable="false" />
+      <img :src="require(`@/assets/images/icon/lottery_${poolType}_1_${oneImg}.png`)" width="238" alt draggable="false" />
     </a>
     <a class="eleven" @mousedown="elevenImg = 2" @click="lotteryDraw(11)">
-      <img :src="`/img/icon/lottery_${poolType}_2_${elevenImg}.png`" width="238" alt draggable="false" />
+      <img :src="require(`@/assets/images/icon/lottery_${poolType}_2_${elevenImg}.png`)" width="238" alt draggable="false" />
     </a>
   </div>
 </template>
@@ -14,6 +14,7 @@ import draw from '@/utils/draw'
 import { eventBus } from '@/utils/eventBus'
 
 export default {
+  name: 'DrawFooter',
   props: {
     poolType: {
       type: String,

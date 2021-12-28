@@ -7,12 +7,13 @@
 </template>
 
 <script>
-import Pool from './components/Index'
+import Pool from './components/Pool'
 import Result from './components/Package'
 import { eventBus } from '@/utils/eventBus'
 import { setAllImageInfo, getAllImageInfo } from '@/utils/cookies'
 
 export default {
+  name: 'draw',
   components: {
     Pool,
     Result

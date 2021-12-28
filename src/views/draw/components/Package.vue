@@ -3,13 +3,13 @@
     <div class="result-contain">
       <div class="result-title">
         <div class="pool-title">
-          <img src="/img/icon/scout.png" alt />
+          <img :src="require('@/assets/images/icon/scout.png')" alt />
         </div>
       </div>
       <div class="result-pool">
         <div class="pool-contain">
           <div :key="index" v-for="(item, index) in drawList" class="card">
-            <img class="card-iframe" :src="`/img/chara/character_frame_${item.star}.png`" alt />
+            <img class="card-iframe" :src="require(`@/assets/images/chara/character_frame_${item.star}.png`)" alt />
             <img class="card-img" :src="`https://file.uimentama.com/saomd/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`" alt />
             <img class="card-attr" :src="require(`@/assets/images/attribute/icon_attribute_${item.attr}.png`)" alt />
             <img class="card-job" :src="require(`@/assets/images/job/icon_job_${item.job}.png`)" alt />
@@ -22,9 +22,10 @@
 </template>
 
 <script>
-import Footer from '@/components/DrawFooter/Index'
+import Footer from '@/components/DrawFooter'
 
 export default {
+  name: 'Package',
   props: {
     poolType: {
       type: String,
@@ -65,11 +66,11 @@ export default {
     height: 100%;
   }
   &::before {
-    background: url('/img/bg_result.png') 0 -40px no-repeat;
+    background: url('~@/assets/images/bg_result.png') 0 -40px no-repeat;
     background-size: 110%;
   }
   &::after {
-    background-color: rgba(0, 0, 0, 0.35);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
   }
   > .result-contain {
@@ -82,7 +83,7 @@ export default {
         width: 231px;
         height: 47px;
         margin-top: 20px;
-        background: url('/img/icon/panel.png') no-repeat;
+        background: url('~@/assets/images/icon/panel.png') no-repeat;
         > img {
           margin: 7px 0 0 63px;
         }

@@ -3,7 +3,7 @@
     <div class="draw-contain">
       <div class="draw-title">
         <div class="pool-title">
-          <img src="/img/icon/scout.png" alt draggable="false" />
+          <img :src="require('@/assets/images/icon/scout.png')" alt draggable="false" />
         </div>
       </div>
       <div class="draw-pool">
@@ -15,10 +15,10 @@
         </div>
         <div class="pool">
           <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
-            <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="`/img/pool/${item.name}.png`" draggable="false" alt />
+            <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="require(`@/assets/images/pool/${item.name}.png`)" draggable="false" alt />
           </div>
-          <img v-if="leftArrowFlag" class="arrow left" src="/img/icon/arrow.png" draggable="false" alt @click="arrowHandle()" />
-          <img v-if="rightArrowFlag" class="arrow right" src="/img/icon/arrow.png" draggable="false" alt @click="arrowHandle('right')" />
+          <img v-if="leftArrowFlag" class="arrow left" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle()" />
+          <img v-if="rightArrowFlag" class="arrow right" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle('right')" />
         </div>
         <button class="details">出現角色一覽/説明</button>
       </div>
@@ -27,8 +27,9 @@
   </div>
 </template>
 <script>
-import Footer from '@/components/DrawFooter/Index'
+import Footer from '@/components/DrawFooter'
 export default {
+  name: 'Pool',
   components: {
     Footer
   },
@@ -133,7 +134,7 @@ export default {
     height: 100%;
   }
   &::before {
-    background: url('/img/draw-bg.png') -80px no-repeat;
+    background: url('~@/assets/images/draw-bg.png') -80px no-repeat;
     background-size: cover;
   }
   &::after {
@@ -150,7 +151,7 @@ export default {
         width: 231px;
         height: 47px;
         margin-top: 20px;
-        background: url('/img/icon/panel.png') no-repeat;
+        background: url('~@/assets/images/icon/panel.png') no-repeat;
         > img {
           margin: 7px 0 0 63px;
         }
@@ -171,21 +172,21 @@ export default {
           &:nth-of-type(1) {
             > input[type='radio'] {
               &:checked + span {
-                border-image-source: url('/img/icon/all_active.png');
+                border-image-source: url('~@/assets/images/icon/all_active.png');
               }
             }
           }
           &:nth-of-type(2) {
             > input[type='radio'] {
               &:checked + span {
-                border-image-source: url('/img/icon/chara_active.png');
+                border-image-source: url('~@/assets/images/icon/chara_active.png');
               }
             }
           }
           &:nth-of-type(3) {
             > input[type='radio'] {
               &:checked + span {
-                border-image-source: url('/img/icon/weapon_active.png');
+                border-image-source: url('~@/assets/images/icon/weapon_active.png');
               }
             }
           }
@@ -201,15 +202,15 @@ export default {
           }
           > .all {
             border-width: 10px 41px 5px 42px;
-            border-image: url('/img/icon/all_default.png') 10 41 5 42 fill;
+            border-image: url('~@/assets/images/icon/all_default.png') 10 41 5 42 fill;
           }
           > .chara {
             border-width: 10px 27px 5px 56px;
-            border-image: url('/img/icon/chara_default.png') 10 27 5 56 fill;
+            border-image: url('~@/assets/images/icon/chara_default.png') 10 27 5 56 fill;
           }
           > .weapon {
             border-width: 10px 27px 5px 56px;
-            border-image: url('/img/icon/weapon_default.png') 10 27 5 56 fill;
+            border-image: url('~@/assets/images/icon/weapon_default.png') 10 27 5 56 fill;
           }
         }
       }
