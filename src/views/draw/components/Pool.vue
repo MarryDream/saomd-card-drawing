@@ -1,47 +1,25 @@
 <template>
-  <div class="draw-base">
-    <div class="draw-contain">
-      <div class="draw-title">
-        <div class="pool-title">
-          <img :src="require('@/assets/images/icon/scout.png')" alt draggable="false" />
-        </div>
-      </div>
-      <div class="draw-pool">
-        <div class="pool-title">
-          <label v-for="(item, index) of categoryList" :key="index" class="select-pool">
-            <input type="radio" :value="item.name" v-model="category" @change="poolTitleChange(item.name)" />
-            <span :class="item.name">{{ `${item.value}(${item.num})` }}</span>
-          </label>
-        </div>
-        <div class="pool">
-          <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
-            <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="require(`@/assets/images/pool/${item.name}.png`)" draggable="false" alt />
-          </div>
-          <img v-if="leftArrowFlag" class="arrow left" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle()" />
-          <img v-if="rightArrowFlag" class="arrow right" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle('right')" />
-        </div>
-        <button class="details">出現角色一覽/説明</button>
-      </div>
-      <Footer :poolType="poolType" :allImageInfo="allImageInfo" />
+  <div class="draw-pool">
+    <div class="pool-title">
+      <label v-for="(item, index) of categoryList" :key="index" class="select-pool">
+        <input type="radio" :value="item.name" v-model="category" @change="poolTitleChange(item.name)" />
+        <span :class="item.name">{{ `${item.value}(${item.num})` }}</span>
+      </label>
     </div>
+    <div class="pool">
+      <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
+        <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="require(`@/assets/images/pool/${item.name}.png`)" draggable="false" alt />
+      </div>
+      <img v-if="leftArrowFlag" class="arrow left" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle()" />
+      <img v-if="rightArrowFlag" class="arrow right" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle('right')" />
+    </div>
+    <button class="details">出現角色一覽/説明</button>
   </div>
 </template>
 <script>
-import Footer from '@/components/DrawFooter'
+import { eventBus } from '@/utils/eventBus'
 export default {
   name: 'Pool',
-  components: {
-    Footer
-  },
-  props: {
-    // 全部图片信息
-    allImageInfo: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    }
-  },
   data() {
     return {
       category: 'all',
@@ -75,7 +53,7 @@ export default {
     arrowHandle(direct = 'left') {
       this.activeIndex = direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
       this.poolType = this.poolList[this.activeIndex].type
-      this.$refs.poolsRef.style.transform = `translateX(${-260 * this.activeIndex}px)`
+      this.$refs.poolsRef.style.transform = `translateX(${-260 * this.activeIndex}rem)`
       this.initPoolArr(this.poolList)
     },
 
@@ -96,12 +74,15 @@ export default {
     }
   },
   watch: {
+    poolType(val) {
+      eventBus.$emit('changePoolType', val)
+    },
     poolList: function (val) {
       this.activeIndex = 0
       this.poolType = this.poolList[this.activeIndex].type
       this.$refs.poolsRef.style.transform = ''
       this.initPoolArr(val)
-      this.$refs.poolsRef.style.width = `width:${(240 + 20) * (this.poolList.length - 1) + 507}px`
+      this.$refs.poolsRef.style.width = `width:${(240 + 20) * (this.poolList.length - 1) + 507}rem`
       setTimeout(() => {
         this.isTransition = true
       }, 400)
@@ -119,156 +100,118 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-.draw-base {
-  width: 495px;
-  position: relative;
-  overflow: hidden;
-  user-select: none;
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-  }
-  &::before {
-    background: url('~@/assets/images/draw-bg.png') -80px no-repeat;
-    background-size: cover;
-  }
-  &::after {
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-  }
-  > .draw-contain {
-    position: relative;
-    z-index: 2;
-    > .draw-title {
-      height: 83px;
-      overflow: hidden;
-      > .pool-title {
-        width: 231px;
-        height: 47px;
-        margin-top: 20px;
-        background: url('~@/assets/images/icon/panel.png') no-repeat;
-        > img {
-          margin: 7px 0 0 63px;
+.draw-pool {
+  height: 602rem;
+  text-align: center;
+  > .pool-title {
+    width: 405rem;
+    margin: 0 auto;
+    display: flex;
+    > .select-pool {
+      flex: 1;
+      > input[type='radio'] {
+        display: none;
+      }
+      &:nth-of-type(1) {
+        > input[type='radio'] {
+          &:checked + span {
+            border-image-source: url('~@/assets/images/icon/all_active.png');
+          }
         }
+      }
+      &:nth-of-type(2) {
+        > input[type='radio'] {
+          &:checked + span {
+            border-image-source: url('~@/assets/images/icon/chara_active.png');
+          }
+        }
+      }
+      &:nth-of-type(3) {
+        > input[type='radio'] {
+          &:checked + span {
+            border-image-source: url('~@/assets/images/icon/weapon_active.png');
+          }
+        }
+      }
+      > span {
+        display: block;
+        height: 38rem;
+        line-height: 20rem;
+        color: #fff;
+        box-sizing: border-box;
+        border-style: solid;
+        margin-left: -5rem;
+        cursor: pointer;
+      }
+      > .all {
+        border-width: 10rem 41rem 5rem 42rem;
+        border-image: url('~@/assets/images/icon/all_default.png') 10 41 5 42 fill;
+      }
+      > .chara {
+        border-width: 10rem 27rem 5rem 56rem;
+        border-image: url('~@/assets/images/icon/chara_default.png') 10 27 5 56 fill;
+      }
+      > .weapon {
+        border-width: 10rem 27rem 5rem 56rem;
+        border-image: url('~@/assets/images/icon/weapon_default.png') 10 27 5 56 fill;
       }
     }
-    > .draw-pool {
-      height: 602px;
-      text-align: center;
-      > .pool-title {
-        width: 405px;
-        margin: 0 auto;
-        display: flex;
-        > .select-pool {
-          flex: 1;
-          > input[type='radio'] {
-            display: none;
-          }
-          &:nth-of-type(1) {
-            > input[type='radio'] {
-              &:checked + span {
-                border-image-source: url('~@/assets/images/icon/all_active.png');
-              }
-            }
-          }
-          &:nth-of-type(2) {
-            > input[type='radio'] {
-              &:checked + span {
-                border-image-source: url('~@/assets/images/icon/chara_active.png');
-              }
-            }
-          }
-          &:nth-of-type(3) {
-            > input[type='radio'] {
-              &:checked + span {
-                border-image-source: url('~@/assets/images/icon/weapon_active.png');
-              }
-            }
-          }
-          > span {
-            display: block;
-            height: 38px;
-            line-height: 20px;
-            color: #fff;
-            box-sizing: border-box;
-            border-style: solid;
-            margin-left: -5px;
-            cursor: pointer;
-          }
-          > .all {
-            border-width: 10px 41px 5px 42px;
-            border-image: url('~@/assets/images/icon/all_default.png') 10 41 5 42 fill;
-          }
-          > .chara {
-            border-width: 10px 27px 5px 56px;
-            border-image: url('~@/assets/images/icon/chara_default.png') 10 27 5 56 fill;
-          }
-          > .weapon {
-            border-width: 10px 27px 5px 56px;
-            border-image: url('~@/assets/images/icon/weapon_default.png') 10 27 5 56 fill;
-          }
-        }
+  }
+  .pool {
+    margin-top: 6rem;
+    position: relative;
+    > .pools {
+      height: 507rem;
+      width: 200%;
+      margin-left: 45rem;
+      > .pools-image {
+        float: left;
+        width: 240rem;
+        margin-left: 20rem;
       }
-      .pool {
-        margin-top: 6px;
-        position: relative;
-        > .pools {
-          height: 507px;
-          width: 200%;
-          margin-left: 45px;
-          > .pools-image {
-            float: left;
-            width: 240px;
-            margin-left: 20px;
-          }
-          > .pools-image:first-child {
-            margin-left: 0;
-          }
-          > .active {
-            width: 405px;
-          }
-        }
-        > .arrow {
-          position: absolute;
-          cursor: pointer;
-          top: 50%;
-        }
-        > .left {
-          left: 0;
-          transform: translateY(-50%) rotateY(180deg);
-          animation: previous 0.35s linear infinite alternate;
-        }
-        > .right {
-          right: 0;
-          transform: translateY(-50%);
-          animation: next 0.35s linear infinite alternate;
-        }
+      > .pools-image:first-child {
+        margin-left: 0;
       }
-      .details {
-        background-color: #0d0d0d;
-        position: relative;
-        border: 1px solid #1b979f;
-        width: 405px;
-        height: 38px;
-        color: #1b979f;
-        text-align: center;
-        box-sizing: border-box;
-        line-height: 36px;
-        font-size: 14px;
-        margin-top: 9px;
-        cursor: pointer;
-        &:active {
-          background-color: #d9b626;
-          border-color: #e9c322;
-          color: #fff;
-          box-shadow: 0 0 4px #e9c322;
-        }
+      > .active {
+        width: 405rem;
       }
+    }
+    > .arrow {
+      width: 32rem;
+      height: 54rem;
+      position: absolute;
+      cursor: pointer;
+      top: 50%;
+    }
+    > .left {
+      left: 0;
+      transform: translateY(-50%) rotateY(180deg);
+      animation: previous 0.35s linear infinite alternate;
+    }
+    > .right {
+      right: 0;
+      transform: translateY(-50%);
+      animation: next 0.35s linear infinite alternate;
+    }
+  }
+  .details {
+    background-color: #0d0d0d;
+    position: relative;
+    border: 1rem solid #1b979f;
+    width: 405rem;
+    height: 38rem;
+    color: #1b979f;
+    text-align: center;
+    box-sizing: border-box;
+    line-height: 36rem;
+    font-size: 14rem;
+    margin-top: 9rem;
+    cursor: pointer;
+    &:active {
+      background-color: #d9b626;
+      border-color: #e9c322;
+      color: #fff;
+      box-shadow: 0 0 4rem #e9c322;
     }
   }
 }
@@ -282,7 +225,7 @@ export default {
     left: 0;
   }
   to {
-    left: -6px;
+    left: -6rem;
   }
 }
 @keyframes next {
@@ -290,7 +233,7 @@ export default {
     right: 0;
   }
   to {
-    right: -6px;
+    right: -6rem;
   }
 }
 </style>

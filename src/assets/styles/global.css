@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
@@ -5,18 +9,20 @@ body {
   height: 100%;
   position: relative;
   z-index: -4;
+  font-size: 6.25%;
 }
 
 #app {
   height: 100%;
   position: relative;
+  font-size: 14rem;
   z-index: -3;
 }
 
 button {
   margin: 0;
   padding: 0;
-  border: 1px solid transparent;
+  border: 1rem solid transparent;
   outline: none;
 }
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="saomd-footer">
+  <div v-if="poolType" class="saomd-footer">
     <a class="one" @mousedown="oneImg = 2" @click="lotteryDraw()">
       <img :src="require(`@/assets/images/icon/lottery_${poolType}_1_${oneImg}.png`)" width="238" alt draggable="false" />
     </a>
@@ -53,6 +53,7 @@ export default {
     lotteryDraw(time = 1) {
       eventBus.$emit('addLottery', draw(this.allImageInfo, this.poolType, time))
       eventBus.$emit('changePoolType', this.poolType)
+      eventBus.$emit('changePage', 2)
     }
   }
 }
@@ -60,13 +61,17 @@ export default {
 
 <style lang="scss" scoped>
 .saomd-footer {
-  height: 195px;
-  padding: 20px 0;
+  height: 195rem;
+  padding: 20rem 0;
   box-sizing: border-box;
   text-align: center;
   a {
     display: inline-block;
     cursor: pointer;
+    img {
+      width: 238rem;
+      height: 120rem;
+    }
   }
 }
 </style>

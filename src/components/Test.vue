@@ -32,7 +32,7 @@ export default {
 <style lang="less" scoped>
 .list-item {
   display: inline-block;
-  margin-right: 10px;
+  margin-right: 10rem;
 }
 .list-enter-active,
 .list-leave-active {
@@ -41,6 +41,6 @@ export default {
 .list-enter, .list-leave-to
 /* .list-leave-active for below version 2.1.8 */ {
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(30rem);
 }
 </style>
