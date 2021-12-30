@@ -111,7 +111,7 @@ export default {
   &-container {
     margin: 30rem;
     .draw-base {
-      width: 495rem;
+      width: 500rem;
       position: relative;
       overflow: hidden;
       user-select: none;

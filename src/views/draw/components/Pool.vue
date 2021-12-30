@@ -163,7 +163,7 @@ export default {
     > .pools {
       height: 507rem;
       width: 200%;
-      margin-left: 45rem;
+      margin-left: calc(50% - 405rem / 2);
       > .pools-image {
         float: left;
         width: 240rem;

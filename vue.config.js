@@ -13,9 +13,9 @@ module.exports = {
    * In most cases please use '/' !!!
    * Detail: https://cli.vuejs.org/config/#publicpath
    */
-  publicPath: '/',
-  outputDir: 'dist',
-  assetsDir: 'static',
+  publicPath: '/saomd-card-drawing/',
+  outputDir: 'docs',
+  assetsDir: 'saomd-card-drawing',
   lintOnSave: true,
   productionSourceMap: false,
   configureWebpack: {
