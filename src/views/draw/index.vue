@@ -109,9 +109,13 @@ export default {
 <style lang="scss" scoped>
 .draw {
   &-container {
-    margin: 30rem;
+    height: var(--screenHeight);
+    display: flex;
+    align-items: center;
+    background-color: #000;
     .draw-base {
-      width: 500rem;
+      width: var(--baseWidth);
+      height: var(--baseHeight);
       position: relative;
       overflow: hidden;
       user-select: none;
@@ -125,12 +129,12 @@ export default {
         height: 100%;
       }
       &.pool::before {
-        background: url('https://file.uimentama.com/saomd-assets/draw-bg.png') -80rem no-repeat;
+        background: url('https://file.uimentama.com/saomd-assets/draw-bg.png') center no-repeat;
         background-size: cover;
       }
       &.package::before {
-        background: url('https://file.uimentama.com/saomd-assets/bg_result.png') 0 -40rem no-repeat;
-        background-size: 110%;
+        background: url('https://file.uimentama.com/saomd-assets/bg_result.png') center no-repeat;
+        background-size: cover;
       }
       &::after {
         background-color: rgba(0, 0, 0, 0.5);
@@ -148,6 +152,7 @@ export default {
             margin-top: 20rem;
             padding-right: 51rem;
             background: url('~@/assets/images/icon/panel.png') no-repeat;
+            background-size: 231rem 47rem;
             text-align: center;
             > img {
               height: 31rem;
