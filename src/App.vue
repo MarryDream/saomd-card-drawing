@@ -6,7 +6,7 @@
 
 <script>
 import Draw from '@/views/draw'
-const [defaultBaseWidth, defaultBaseHeight] = [500, 880]
+const [defaultBaseWidth, defaultBaseHeight] = [50, 88]
 export default {
   components: {
     Draw
@@ -36,7 +36,7 @@ export default {
         remSize = height / defaultBaseHeight
         this.baseHeight = height + 'px'
       } else {
-        this.baseHeight =  defaultBaseHeight * remSize + 'px'
+        this.baseHeight = defaultBaseHeight * remSize + 'px'
       }
       htmlEle.style.fontSize = remSize + 'px'
     }

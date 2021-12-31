@@ -4,7 +4,7 @@
       <div class="draw-contain">
         <div class="draw-title">
           <div class="pool-title">
-            <img :src="require(`@/assets/images/icon/${isPoolPage ? 'scout' : 'scout result'}.png`)" :style="{ width: isPoolPage ? '54rem' : '111rem' }" alt draggable="false" />
+            <img :src="require(`@/assets/images/icon/${isPoolPage ? 'scout' : 'scout result'}.png`)" :style="{ width: isPoolPage ? '5.4rem' : '11.1rem' }" alt draggable="false" />
           </div>
         </div>
         <component :is="componentName" :poolType="poolType" :drawList="drawList"></component>
@@ -144,19 +144,19 @@ export default {
         position: relative;
         z-index: 2;
         > .draw-title {
-          height: 83rem;
+          height: 8.3rem;
           overflow: hidden;
           > .pool-title {
-            width: 231rem;
-            height: 47rem;
-            margin-top: 20rem;
-            padding-right: 51rem;
+            width: 23.1rem;
+            height: 4.7rem;
+            margin-top: 2rem;
+            padding-right: 5.1rem;
             background: url('~@/assets/images/icon/panel.png') no-repeat;
-            background-size: 231rem 47rem;
+            background-size: 23.1rem 4.7rem;
             text-align: center;
             > img {
-              height: 31rem;
-              margin-top: 7rem;
+              height: 3.1rem;
+              margin-top: 0.7rem;
             }
           }
         }

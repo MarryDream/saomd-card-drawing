@@ -34,16 +34,16 @@ export default {
 
 <style lang="scss" scoped>
 .result-pool {
-  height: 592rem;
-  margin-top: 10rem;
+  height: 59.2rem;
+  margin-top: 1rem;
   .pool-contain {
     display: flex;
     align-items: center;
     position: relative;
     margin: 0 auto;
-    padding: 15rem 0;
-    width: 488rem;
-    height: 550rem;
+    padding: 1.5rem 0;
+    width: 48.8rem;
+    height: 55rem;
     background-color: rgba(205, 205, 205, 0.85);
     background-clip: content-box;
     overflow: hidden;
@@ -53,17 +53,17 @@ export default {
       position: absolute;
       left: 0;
       right: 0;
-      height: 15rem;
+      height: 1.5rem;
       background-color: #dfdfdf;
       opacity: 0.95;
     }
     &::before {
       top: 0;
-      box-shadow: 0 0 3rem 3rem #fff inset, 0 5rem 3rem #888;
+      box-shadow: 0 0 0.3rem 0.3rem #fff inset, 0 0.5rem 0.3rem #888;
     }
     &::after {
       bottom: 0;
-      box-shadow: 0 0 3rem 3rem #fff inset, 0 -5rem 3rem #888;
+      box-shadow: 0 0 0.3rem 0.3rem #fff inset, 0 -0.5rem 0.3rem #888;
     }
     .card-contain {
       display: flex;
@@ -72,30 +72,30 @@ export default {
       align-items: center;
       position: relative;
       .card {
-        width: 120rem;
-        height: 136rem;
+        width: 12rem;
+        height: 13.6rem;
         position: relative;
-        margin: 1rem -1rem;
-        background: url('~@/assets/images/icon/card_bg.png') 9rem 12rem no-repeat;
-        background-size: 104rem 116rem;
+        margin: 0.1rem -0.1rem;
+        background: url('~@/assets/images/icon/card_bg.png') 0.9rem 1.2rem no-repeat;
+        background-size: 10.4rem 11.6rem;
         &:last-child {
-          margin-right: 114rem;
+          margin-right: 11.4rem;
         }
         .attr-box {
-          width: 28rem;
-          height: 28rem;
+          width: 2.8rem;
+          height: 2.8rem;
           display: flex;
           justify-content: center;
           align-items: center;
           position: absolute;
-          right: 7rem;
-          bottom: 3rem;
+          right: 0.7rem;
+          bottom: 0.3rem;
           z-index: 20;
           .card-attr {
             width: inherit;
           }
           .card-job {
-            width: 20rem;
+            width: 2rem;
           }
         }
         img {
@@ -106,9 +106,9 @@ export default {
           }
           &.card-img {
             position: absolute;
-            width: 113rem;
-            left: 5rem;
-            top: 12rem;
+            width: 11.3rem;
+            left: 0.5rem;
+            top: 1.2rem;
           }
         }
       }

@@ -53,7 +53,7 @@ export default {
     arrowHandle(direct = 'left') {
       this.activeIndex = direct === 'left' ? this.activeIndex - 1 : this.activeIndex + 1
       this.poolType = this.poolList[this.activeIndex].type
-      this.$refs.poolsRef.style.transform = `translateX(${-260 * this.activeIndex}rem)`
+      this.$refs.poolsRef.style.transform = `translateX(${-26 * this.activeIndex}rem)`
       this.initPoolArr(this.poolList)
     },
 
@@ -82,7 +82,7 @@ export default {
       this.poolType = this.poolList[this.activeIndex].type
       this.$refs.poolsRef.style.transform = ''
       this.initPoolArr(val)
-      this.$refs.poolsRef.style.width = `width:${(240 + 20) * (this.poolList.length - 1) + 507}rem`
+      this.$refs.poolsRef.style.width = `width:${(24 + 2) * (this.poolList.length - 1) + 50.7}rem`
       setTimeout(() => {
         this.isTransition = true
       }, 400)
@@ -101,10 +101,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .draw-pool {
-  height: 602rem;
+  height: 60.2rem;
   text-align: center;
   > .pool-title {
-    width: 405rem;
+    width: 40.5rem;
     margin: 0 auto;
     display: flex;
     > .select-pool {
@@ -135,50 +135,50 @@ export default {
       }
       > span {
         display: block;
-        height: 38rem;
-        line-height: 20rem;
+        height: 3.8rem;
+        line-height: 2rem;
         color: #fff;
         box-sizing: border-box;
         border-style: solid;
-        margin-left: -5rem;
+        margin-left: -0.5rem;
         cursor: pointer;
       }
       > .all {
-        border-width: 10rem 41rem 5rem 42rem;
+        border-width: 1rem 4.1rem 0.5rem 4.2rem;
         border-image: url('~@/assets/images/icon/all_default.png') 10 41 5 42 fill;
       }
       > .chara {
-        border-width: 10rem 27rem 5rem 56rem;
+        border-width: 1rem 2.7rem 0.5rem 5.6rem;
         border-image: url('~@/assets/images/icon/chara_default.png') 10 27 5 56 fill;
       }
       > .weapon {
-        border-width: 10rem 27rem 5rem 56rem;
+        border-width: 1rem 2.7rem 0.5rem 5.6rem;
         border-image: url('~@/assets/images/icon/weapon_default.png') 10 27 5 56 fill;
       }
     }
   }
   .pool {
-    margin-top: 6rem;
+    margin-top: 0.6rem;
     position: relative;
     > .pools {
-      height: 507rem;
+      height: 50.7rem;
       width: 200%;
-      margin-left: calc(50% - 405rem / 2);
+      margin-left: calc(50% - 40.5rem / 2);
       > .pools-image {
         float: left;
-        width: 240rem;
-        margin-left: 20rem;
+        width: 24rem;
+        margin-left: 2rem;
       }
       > .pools-image:first-child {
         margin-left: 0;
       }
       > .active {
-        width: 405rem;
+        width: 40.5rem;
       }
     }
     > .arrow {
-      width: 32rem;
-      height: 54rem;
+      width: 3.2rem;
+      height: 5.4rem;
       position: absolute;
       cursor: pointer;
       top: 50%;
@@ -197,21 +197,21 @@ export default {
   .details {
     background-color: #0d0d0d;
     position: relative;
-    border: 1rem solid #1b979f;
-    width: 405rem;
-    height: 38rem;
+    border: 0.1rem solid #1b979f;
+    width: 40.5rem;
+    height: 3.8rem;
     color: #1b979f;
     text-align: center;
     box-sizing: border-box;
-    line-height: 36rem;
-    font-size: 14rem;
-    margin-top: 9rem;
+    line-height: 3.6rem;
+    font-size: 1.4rem;
+    margin-top: 0.9rem;
     cursor: pointer;
     &:active {
       background-color: #d9b626;
       border-color: #e9c322;
       color: #fff;
-      box-shadow: 0 0 4rem #e9c322;
+      box-shadow: 0 0 0.4rem #e9c322;
     }
   }
 }
@@ -225,7 +225,7 @@ export default {
     left: 0;
   }
   to {
-    left: -6rem;
+    left: -0.6rem;
   }
 }
 @keyframes next {
@@ -233,7 +233,7 @@ export default {
     right: 0;
   }
   to {
-    right: -6rem;
+    right: -0.6rem;
   }
 }
 </style>

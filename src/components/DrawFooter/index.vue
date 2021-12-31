@@ -61,16 +61,16 @@ export default {
 
 <style lang="scss" scoped>
 .saomd-footer {
-  height: 195rem;
-  padding: 20rem 0;
+  height: 19.5rem;
+  padding: 2rem 0;
   box-sizing: border-box;
   text-align: center;
   a {
     display: inline-block;
     cursor: pointer;
     img {
-      width: 238rem;
-      height: 120rem;
+      width: 23.8rem;
+      height: 12rem;
     }
   }
 }
