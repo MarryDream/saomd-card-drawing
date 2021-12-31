@@ -125,11 +125,11 @@ export default {
         height: 100%;
       }
       &.pool::before {
-        background: url('~@/assets/images/draw-bg.png') -80rem no-repeat;
+        background: url('https://file.uimentama.com/saomd-assets/draw-bg.png') -80rem no-repeat;
         background-size: cover;
       }
       &.package::before {
-        background: url('~@/assets/images/bg_result.png') 0 -40rem no-repeat;
+        background: url('https://file.uimentama.com/saomd-assets/bg_result.png') 0 -40rem no-repeat;
         background-size: 110%;
       }
       &::after {

@@ -2,7 +2,7 @@ import axios from 'axios'
 import getAuth from '@/utils/upyun'
 
 const server = axios.create({
-  baseURL: 'http://v0.api.upyun.com/drawing-marry',
+  baseURL: 'https://v0.api.upyun.com/drawing-marry',
   timeout: 60000,
   headers: {
     Authorization: getAuth('GET', '/drawing-marry/saomd')

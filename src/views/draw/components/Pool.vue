@@ -8,7 +8,7 @@
     </div>
     <div class="pool">
       <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
-        <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="require(`@/assets/images/pool/${item.name}.png`)" draggable="false" alt />
+        <img v-for="(item, index) of poolList" :key="index" class="pools-image" :class="{ active: item.active, poolTransition: isTransition }" :src="`https://file.uimentama.com/saomd-assets/pool/${item.name}.png`" draggable="false" alt />
       </div>
       <img v-if="leftArrowFlag" class="arrow left" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle()" />
       <img v-if="rightArrowFlag" class="arrow right" :src="require('@/assets/images/icon/arrow.png')" draggable="false" alt @click="arrowHandle('right')" />
