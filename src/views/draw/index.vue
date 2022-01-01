@@ -1,6 +1,12 @@
 <template>
   <div class="draw-container" @contextmenu.prevent>
+    <audio ref="bgmAudio" style="display: none" src="https://file.uimentama.com/saomd-assets/sounds/lottery_bgm.ogg" preload="auto" loop="loop"></audio>
     <div class="draw-base" :class="isPoolPage ? 'pool' : 'package'">
+      <label for="bgmCheckbox" class="diy-checkout">
+        <span>BGM</span>
+        <input id="bgmCheckbox" v-model="bgmPlayState" type="checkbox" @change="changeBgmstate" />
+        <div class="checkout-box"></div>
+      </label>
       <div class="draw-contain">
         <div class="draw-title">
           <div class="pool-title">
@@ -35,7 +41,9 @@ export default {
       pageType: 1,
       drawList: '',
       // 全部图片信息
-      allImageInfo: {}
+      allImageInfo: {},
+      // bgm播放状态太
+      bgmPlayState: false
     }
   },
   mounted() {
@@ -67,6 +75,11 @@ export default {
     },
     addLottery(list) {
       this.drawList = list
+    },
+    /* 控制播放bgm */
+    changeBgmstate() {
+      const audio = this.$refs.bgmAudio
+      this.bgmPlayState ? audio.play() : audio.pause()
     },
     initImgInfo() {
       // 先从localStory里面获取，若没有再请求
@@ -139,6 +152,55 @@ export default {
       &::after {
         background-color: rgba(0, 0, 0, 0.5);
         z-index: 1;
+      }
+      > .diy-checkout {
+        --background-color-active: #3e83bc;
+        --background-color: #da424e;
+        display: flex;
+        align-items: center;
+        $width: 8.8rem;
+        $height: 4.2rem;
+        $control-width: $height - 1.5rem;
+        position: absolute;
+        right: 1.5em;
+        top: 1.5em;
+        z-index: 10;
+        > span {
+          margin-right: 0.5em;
+          font-size: 1.6rem;
+          color: #fff;
+        }
+        #bgmCheckbox {
+          display: none;
+          &:checked + .checkout-box {
+            background-color: var(--background-color-active);
+            &::before {
+              border: 0.3rem solid var(--background-color-active);
+              transform: translateX($width - $control-width - 1.1rem);
+            }
+          }
+        }
+        .checkout-box {
+          width: $width;
+          height: $height;
+          display: flex;
+          align-items: center;
+          border-radius: 2.1rem;
+          background-color: var(--background-color);
+          box-shadow: 0 0 1px rgba(51, 51, 51, 0.3), 0 1px 3px #333 inset, 0 -1px 1px rgba(204, 204, 204, 0.3) inset, 0 -3px 1px rgba(51, 51, 51, 0.3) inset;
+          overflow: hidden;
+          &::before {
+            content: '';
+            width: $control-width;
+            height: $control-width;
+            border-radius: 50%;
+            background-color: #fff;
+            border: 0.3rem solid var(--background-color);
+            box-shadow: 0 0 0 0.2rem #fff;
+            transform: translateX(0.5rem);
+            transition: transform 0.2s;
+          }
+        }
       }
       > .draw-contain {
         display: flex;

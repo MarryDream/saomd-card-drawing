@@ -4,7 +4,7 @@
       <div class="card-contain">
         <div :key="index" v-for="(item, index) in drawList" class="card">
           <img class="card-iframe" :src="require(`@/assets/images/chara/character_frame_${item.star}.png`)" alt draggable="false" />
-          <img class="card-img" :src="`https://file.uimentama.com/saomd/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`" alt draggable="false" />
+          <img class="card-img" :style="cardImgStyle" :src="`https://file.uimentama.com/saomd/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`" alt draggable="false" />
           <div class="attr-box">
             <img class="card-attr" :src="require(`@/assets/images/attribute/icon_attribute_${item.attr}.png`)" alt draggable="false" />
             <img class="card-job" :src="require(`@/assets/images/job/icon_job_${item.job}.png`)" alt draggable="false" />
@@ -27,6 +27,25 @@ export default {
     drawList: {
       type: Array,
       default: () => []
+    }
+  },
+  computed: {
+    cardImgStyle() {
+      let style
+      if (this.poolType === 'character') {
+        style = {
+          width: '11.3rem',
+          left: '0.5rem',
+          top: '1.2rem'
+        }
+      } else {
+        style = {
+          width: '10.3rem',
+          left: '0.9rem',
+          top: '1.8rem'
+        }
+      }
+      return style
     }
   }
 }
@@ -109,9 +128,6 @@ export default {
           }
           &.card-img {
             position: absolute;
-            width: 11.3rem;
-            left: 0.5rem;
-            top: 1.2rem;
           }
         }
       }
