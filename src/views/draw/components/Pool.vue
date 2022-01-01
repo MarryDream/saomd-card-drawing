@@ -17,7 +17,6 @@
   </div>
 </template>
 <script>
-import { eventBus } from '@/utils/eventBus'
 export default {
   name: 'Pool',
   data() {
@@ -75,7 +74,7 @@ export default {
   },
   watch: {
     poolType(val) {
-      eventBus.$emit('changePoolType', val)
+      this.$emit('changePoolType', val)
     },
     poolList: function (val) {
       this.activeIndex = 0

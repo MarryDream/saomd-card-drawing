@@ -6,7 +6,7 @@
 
 <script>
 import Draw from '@/views/draw'
-const [defaultBaseWidth, defaultBaseHeight] = [50, 88]
+const [defaultBaseWidth, defaultBaseHeight] = [50, 95]
 export default {
   components: {
     Draw

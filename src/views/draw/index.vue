@@ -1,5 +1,5 @@
 <template>
-  <div class="draw-container">
+  <div class="draw-container" @contextmenu.prevent>
     <div class="draw-base" :class="isPoolPage ? 'pool' : 'package'">
       <div class="draw-contain">
         <div class="draw-title">
@@ -7,8 +7,8 @@
             <img :src="require(`@/assets/images/icon/${isPoolPage ? 'scout' : 'scout result'}.png`)" :style="{ width: isPoolPage ? '5.4rem' : '11.1rem' }" alt draggable="false" />
           </div>
         </div>
-        <component :is="componentName" :poolType="poolType" :drawList="drawList"></component>
-        <Footer :poolType="poolType" :allImageInfo="allImageInfo" />
+        <component :is="componentName" :poolType="poolType" :drawList="drawList" @changePoolType="changePoolType"></component>
+        <Footer class="footer-box" :poolType="poolType" :pageType="pageType" :allImageInfo="allImageInfo" @addLottery="addLottery" @changePage="changePage" @changePoolType="changePoolType" />
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@ export default {
   data() {
     return {
       poolType: '',
-      // 当前页面
+      // 当前页面 2结果页
       pageType: 1,
       drawList: '',
       // 全部图片信息
@@ -57,16 +57,16 @@ export default {
   methods: {
     // 初始化方法
     init() {
-      eventBus.$on('changePoolType', type => {
-        this.poolType = type
-      })
-      eventBus.$on('changePage', type => {
-        this.pageType = type
-      })
-      eventBus.$on('addLottery', list => {
-        this.drawList = list
-      })
       this.initImgInfo()
+    },
+    changePoolType(type) {
+      this.poolType = type
+    },
+    changePage(type) {
+      this.pageType = type
+    },
+    addLottery(list) {
+      this.drawList = list
     },
     initImgInfo() {
       // 先从localStory里面获取，若没有再请求
@@ -141,6 +141,9 @@ export default {
         z-index: 1;
       }
       > .draw-contain {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         position: relative;
         z-index: 2;
         > .draw-title {
@@ -159,6 +162,9 @@ export default {
               margin-top: 0.7rem;
             }
           }
+        }
+        > .footer-box {
+          flex: 1;
         }
       }
     }

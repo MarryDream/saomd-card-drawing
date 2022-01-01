@@ -44,7 +44,10 @@ export default {
     padding: 1.5rem 0;
     width: 48.8rem;
     height: 55rem;
+    background: url('~@/assets/images/icon/result_bg_1.png') no-repeat, url('~@/assets/images/icon/result_bg_2.png') no-repeat;
+    background-size: 20rem 18rem, 30rem 34.1rem;
     background-color: rgba(205, 205, 205, 0.85);
+    background-position: 28.8rem 1.5rem, 0 14rem;
     background-clip: content-box;
     overflow: hidden;
     &::before,
