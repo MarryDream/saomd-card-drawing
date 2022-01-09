@@ -1,19 +1,13 @@
-# saomd-card-drawing
+# saomd抽卡模拟器
 
-## Project setup
-```
-npm install
-```
+>未完成
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+[预览][1]
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### 代做
+ - 图片预加载
+ - 加载过场动画
+ - 移动端触摸弹窗问题
+ - 奸商（？）
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[1]: https://marrydream.github.io/saomd-card-drawing/
