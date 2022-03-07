@@ -4,44 +4,57 @@
   </div>
 </template>
 
-<script>
-import Draw from '@/views/draw'
-const [defaultBaseWidth, defaultBaseHeight] = [50, 95]
-export default {
+<script lang="ts">
+import Draw from "@/views/draw/index.vue"
+import {defineComponent, onMounted, reactive, toRefs} from "vue";
+
+export default defineComponent({
+  name: "App",
   components: {
     Draw
   },
-  data() {
-    return {
-      screenHeight: 0,
-      baseWidth: 0,
-      baseHeight: 0
+  setup() {
+    const [defaultBaseWidth, defaultBaseHeight] = [50, 95]
+    
+    interface IState {
+      screenHeight: string
+      baseWidth: string
+      baseHeight: string
     }
-  },
-  created() {
-    window.addEventListener('resize', this.resetWindow)
-    this.resetWindow()
-  },
-  methods: {
-    resetWindow() {
+    
+    const state: IState = reactive({
+      screenHeight: "0",
+      baseWidth: "0",
+      baseHeight: "0"
+    })
+    
+    
+    function resetWindow() {
       const htmlEle = document.documentElement
       const width = document.documentElement.clientWidth
       const height = document.documentElement.clientHeight
       // 1rem代表多少px
-      this.baseWidth = width + 'px'
-      this.screenHeight = height + 'px'
+      state.baseWidth = width + 'px'
+      state.screenHeight = height + 'px'
       let remSize = width / defaultBaseWidth
       // 当跟随宽度缩放高度要溢出时，修改为固定高度且根据高度缩放
       if (defaultBaseHeight * remSize > height) {
         remSize = height / defaultBaseHeight
-        this.baseHeight = height + 'px'
+        state.baseHeight = height + 'px'
       } else {
-        this.baseHeight = defaultBaseHeight * remSize + 'px'
+        state.baseHeight = defaultBaseHeight * remSize + 'px'
       }
       htmlEle.style.fontSize = remSize + 'px'
     }
+    
+    onMounted(() => {
+      window.addEventListener('resize', resetWindow)
+      resetWindow()
+    })
+    
+    return {
+      ...toRefs(state)
+    }
   }
-}
+})
 </script>
-
-<style></style>
