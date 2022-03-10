@@ -2,11 +2,13 @@
   <div class="saomd-footer">
     <div v-if="poolType" class="footer-lottery-btn">
       <a class="one" @mousedown="lotteryBtnDown($event, 'oneImg')" @touchstart="oneImg = 2" @click="lotteryDraw()">
-        <img :src="`/src/assets/images/icon/lottery_${poolType}_1_${oneImg}.png`" width="238" alt="ERROR" draggable="false"/>
+        <img :src="getAssetsFile(`icon/lottery_${poolType}_1_${oneImg}.png`)" width="238" alt="ERROR"
+             draggable="false"/>
       </a>
       <a class="eleven" @mousedown="lotteryBtnDown($event, 'elevenImg')" @touchstart="elevenImg = 2"
          @click="lotteryDraw(11)">
-        <img :src="`/src/assets/images/icon/lottery_${poolType}_2_${elevenImg}.png`" width="238" alt="ERROR" draggable="false"/>
+        <img :src="getAssetsFile(`icon/lottery_${poolType}_2_${elevenImg}.png`)" width="238" alt="ERROR"
+             draggable="false"/>
       </a>
     </div>
     <div class="footer-navigator-btn">
@@ -19,10 +21,11 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, onBeforeUnmount, PropType, reactive, toRefs} from "vue"
-import draw, { DrawTime } from '@/utils/draw'
+import draw, {DrawTime} from '@/utils/draw'
 import {AllImageInfo, ImageInfo} from "@/type/ImageInfo"
 import {IFooterState} from "@/type/footer"
 import {PageType} from "@/type/draw"
+import {getAssetsFile} from "@/utils/pub-use"
 
 export default defineComponent({
   name: "DrawFooter",
@@ -91,6 +94,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      getAssetsFile,
       lotteryBtnDown,
       lotteryDraw,
       backToPoll

@@ -3,15 +3,15 @@
     <div class="pool-contain">
       <div class="card-contain">
         <div :key="index" v-for="(item, index) in drawList" class="card">
-          <img class="card-iframe" :src="`/src/assets/images/chara/character_frame_${item.star}.png`" alt="ERROR"
+          <img class="card-iframe" :src="getAssetsFile(`chara/character_frame_${item.star}.png`)" alt="ERROR"
                draggable="false"/>
           <img class="card-img" :style="cardImgStyle"
                :src="`https://file.uimentama.com/saomd/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`"
                alt="ERROR" draggable="false"/>
           <div class="attr-box">
-            <img class="card-attr" :src="`/src/assets/images/attribute/icon_attribute_${item.attr}.png`" alt="ERROR"
+            <img class="card-attr" :src="getAssetsFile(`attribute/icon_attribute_${item.attr}.png`)" alt="ERROR"
                  draggable="false"/>
-            <img class="card-job" :src="`/src/assets/images/job/icon_job_${item.job}.png`" alt="ERROR" draggable="false"/>
+            <img class="card-job" :src="getAssetsFile(`job/icon_job_${item.job}.png`)" alt="ERROR" draggable="false"/>
           </div>
         </div>
       </div>
@@ -20,8 +20,9 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed, PropType} from "vue"
-import {ImageInfo} from "@/type/ImageInfo"
+import {defineComponent, computed, PropType} from "vue";
+import {ImageInfo} from "@/type/ImageInfo";
+import {getAssetsFile} from "@/utils/pub-use";
 
 export default defineComponent({
   name: "Package",
@@ -50,6 +51,7 @@ export default defineComponent({
     })
     
     return {
+      getAssetsFile,
       cardImgStyle
     }
   }

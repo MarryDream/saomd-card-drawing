@@ -11,7 +11,7 @@
       <div class="draw-contain">
         <div class="draw-title">
           <div class="pool-title">
-            <img :src="`/src/assets/images/icon/${isPoolPage ? 'scout' : 'scout result'}.png`"
+            <img :src="getAssetsFile(`icon/${isPoolPage ? 'scout' : 'scout result'}.png`)"
                  :style="{ width: isPoolPage ? '5.4rem' : '11.1rem' }" alt="ERROR" draggable="false"/>
           </div>
         </div>
@@ -34,6 +34,7 @@ import {isAllImageInfo} from "@/type/check"
 import $http from "@/api"
 import {ImageInfo, AllImageInfo} from "@/type/ImageInfo"
 import {IDrawState} from "@/type/draw"
+import {getAssetsFile} from "@/utils/pub-use"
 
 export default defineComponent({
   name: "Draw",
@@ -116,6 +117,7 @@ export default defineComponent({
 
     return {
       ...toRefs(state),
+      getAssetsFile,
       bgmAudio,
       changePoolType,
       changePage,
