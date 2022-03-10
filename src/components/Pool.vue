@@ -25,7 +25,6 @@
 <script lang="ts">
 import {defineComponent, reactive, computed, ref, Ref, toRefs, onMounted, watch, PropType} from "vue"
 import {IPropState, IPoolItem, Category} from "@/type/pool";
-import {ImageInfo} from "@/type/ImageInfo";
 
 export default defineComponent({
   name: "Pool",

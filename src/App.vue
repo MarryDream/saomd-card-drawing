@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts">
-import Draw from "@/views/draw/index.vue"
+import Draw from "@/views/Draw.vue"
 import {defineComponent, onMounted, reactive, toRefs} from "vue";
 
 export default defineComponent({

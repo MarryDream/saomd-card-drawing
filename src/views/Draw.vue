@@ -26,9 +26,9 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, computed, ComputedRef, ref, Ref, reactive, toRefs} from "vue"
-import Pool from "./components/Pool.vue"
-import Result from "./components/Package.vue"
-import Footer from "@/components/DrawFooter/index.vue"
+import Pool from "@/components/Pool.vue"
+import Result from "@/components/Package.vue"
+import Footer from "@/components/DrawFooter.vue"
 import {setAllImageInfo, getAllImageInfo} from "@/utils/cookies"
 import {isAllImageInfo} from "@/type/check"
 import $http from "@/api"
