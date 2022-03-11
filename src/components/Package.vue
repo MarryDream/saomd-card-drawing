@@ -6,7 +6,7 @@
           <img class="card-iframe" :src="getAssetsFile(`chara/character_frame_${item.star}.png`)" alt="ERROR"
                draggable="false"/>
           <img class="card-img" :style="cardImgStyle"
-               :src="`https://file.uimentama.com/saomd/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`"
+               :src="`https://file.uimentama.com/saomd-card-draw/images/items/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`"
                alt="ERROR" draggable="false"/>
           <div class="attr-box">
             <img class="card-attr" :src="getAssetsFile(`attribute/icon_attribute_${item.attr}.png`)" alt="ERROR"

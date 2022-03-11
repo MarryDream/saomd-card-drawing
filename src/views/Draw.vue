@@ -1,6 +1,6 @@
 <template>
   <div class="draw-container" @contextmenu.prevent>
-    <audio ref="bgmAudio" style="display: none" src="https://file.uimentama.com/saomd-assets/sounds/lottery_bgm.ogg"
+    <audio ref="bgmAudio" style="display: none" src="https://file.uimentama.com/saomd-card-draw/sounds/lottery_bgm.ogg"
            preload="auto" loop="true"></audio>
     <div class="draw-base" :class="isPoolPage ? 'pool' : 'package'">
       <label for="bgmCheckbox" class="diy-checkout">
@@ -138,12 +138,12 @@ export default defineComponent({
       }
 
       &.pool::before {
-        background: url('https://file.uimentama.com/saomd-assets/draw-bg.png') center no-repeat;
+        background: url('https://file.uimentama.com/saomd-card-draw/images/background/draw-bg.png') center no-repeat;
         background-size: cover;
       }
 
       &.package::before {
-        background: url('https://file.uimentama.com/saomd-assets/bg_result.png') center no-repeat;
+        background: url('https://file.uimentama.com/saomd-card-draw/images/background/bg_result.png') center no-repeat;
         background-size: cover;
       }
 
