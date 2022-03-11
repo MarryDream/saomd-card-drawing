@@ -67,30 +67,13 @@ export default defineComponent({
         state.allImageInfo = imageInfo
         return
       }
-      $http.getImageList({ src: '/saomd' }, "get").then((res: any) => {
-        const allImageInfo: AllImageInfo = {}
-        const reg: RegExp = /(character|weapon)_star(\d)_job(\d+)_(\w+)_(\d+)/
-        for (const file of res.data.files) {
-          const fileName = file.name
-          let type: ImageInfo["type"], star: ImageInfo["star"], job: ImageInfo["job"], attr: ImageInfo["attr"],
-            id: ImageInfo["id"]
-          [, type, star, job, attr, id] = fileName.match(reg)
-          // 若种类属性不存在，设置为空对象
-          if (!allImageInfo[type]) {
-            allImageInfo[type] = {}
-          }
-          const allImageInfoByType = allImageInfo[type] || []
-          // 若星级属性不存在，设置为空数组
-          allImageInfoByType[star] = allImageInfoByType[star] || []
-          allImageInfoByType[star]!.push({id, star, type, job, attr})
-        }
-        state.allImageInfo = allImageInfo
+      $http.GET_IMAGE_INFO({}, "get").then((res: AllImageInfo) => {
+        state.allImageInfo = res
         // 存放至localstory
-        setAllImageInfo(allImageInfo)
+        setAllImageInfo(res)
+      }).catch((err: any) => {
+        console.log(err || '获取文件失败')
       })
-        .catch((err: any) => {
-          console.log(err || '获取文件失败')
-        })
     }
 
     function changePoolType(type: ImageInfo["type"]) {

@@ -1,7 +1,6 @@
 import axios, {AxiosResponse} from 'axios'
 
 const server = axios.create({
-  baseURL: `${import.meta.env.VITE_BASE_URL}/api`,
   withCredentials: false, // 跨域时是否携带cookies
   responseType: "json",
   timeout: 60000,
