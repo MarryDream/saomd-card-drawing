@@ -67,7 +67,9 @@ export default defineComponent({
         state.allImageInfo = imageInfo
         return
       }
-      $http.GET_IMAGE_INFO({}, "get").then((res: AllImageInfo) => {
+      $http.GET_IMAGE_INFO({
+        random: new Date().getTime()
+      }, "get").then((res: AllImageInfo) => {
         state.allImageInfo = res
         // 存放至localstory
         setAllImageInfo(res)
