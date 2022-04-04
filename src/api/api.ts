@@ -3,7 +3,7 @@ export interface IApis {
 }
 
 const apis: IApis = {
-  GET_IMAGE_INFO: 'https://file.uimentama.com/saomd-card-draw/docs/drawInfo.json'
+  GET_IMAGE_INFO: 'https://file.uimentama.com/saomd-card-draw/docs/drawInfo.yml'
 }
 
 export default apis

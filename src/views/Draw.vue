@@ -35,6 +35,7 @@ import $http from "@/api"
 import {ImageInfo, AllImageInfo} from "@/type/ImageInfo"
 import {IDrawState} from "@/type/draw"
 import {getAssetsFile} from "@/utils/pub-use"
+import {parse} from "yaml";
 
 export default defineComponent({
   name: "Draw",
@@ -69,10 +70,10 @@ export default defineComponent({
       }
       $http.GET_IMAGE_INFO({
         random: new Date().getTime()
-      }, "get").then((res: AllImageInfo) => {
-        state.allImageInfo = res
+      }, "get").then((res: string) => {
+        state.allImageInfo = (parse(res) as AllImageInfo)
         // 存放至localstory
-        setAllImageInfo(res)
+        setAllImageInfo(state.allImageInfo)
       }).catch((err: any) => {
         console.log(err || '获取文件失败')
       })
