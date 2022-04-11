@@ -1,0 +1,15 @@
+name: BUG 反馈
+description: 反馈项目使用过程中出现的问题与错误
+labels:
+  - bug
+body:
+  - type: textarea
+    id: do-something
+    attributes:
+      label: 复现操作
+      placeholder: 描述出现此问题时经过的操作，例如 qq指令交互、cmd命令等
+  - type: textarea
+    id: bug-log
+    attributes:
+      label: 错误报告
+      placeholder: 出现该问题时控制台打印的报错警告

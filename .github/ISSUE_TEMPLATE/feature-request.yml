@@ -1,0 +1,10 @@
+name: 功能优化
+description: 功能需求及优化方案
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: request-desc
+    attributes:
+      label: 功能需求
+      description: 描述优化方案和功能需求
