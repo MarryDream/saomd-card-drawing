@@ -10,7 +10,7 @@
       <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
         <img v-for="(item, index) of poolList" :key="index" class="pools-image"
              :class="{ active: item.active, poolTransition: isTransition }"
-             :src="`https://file.uimentama.com/saomd-card-draw/images/pool/${item.name}.png`" draggable="false" alt="ERROR"/>
+             :src="`https://oss.marrydream.top/saomd-card-draw/images/pool/${item.name}.png`" draggable="false" alt="ERROR"/>
       </div>
       <img v-if="leftArrowFlag" class="arrow left" src="/src/assets/images/icon/arrow.png" draggable="false" alt="ERROR"
            @click="arrowHandle('left')"/>
