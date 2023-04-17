@@ -19,6 +19,10 @@
         <Result v-else :poolType="poolType" :drawList="drawList"></Result>
         <Footer class="footer-box" :poolType="poolType" :pageType="pageType" :allImageInfo="allImageInfo"
                 @addLottery="addLottery" @changePage="changePage" @changePoolType="changePoolType"/>
+        <p class="copyright">
+            <span>Copyright &copy;{{ new Date().getFullYear() }} 飞鸟茉莉 | </span>
+            <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2020044886号</a>
+        </p>
       </div>
     </div>
   </div>
@@ -240,6 +244,15 @@ export default defineComponent({
 
         > .footer-box {
           flex: 1;
+        }
+        > .copyright {
+          margin: .6rem 0;
+          text-align: center;
+          color: #fff;
+          a {
+            text-decoration: none;
+            color: #fff;
+          }
         }
       }
     }
