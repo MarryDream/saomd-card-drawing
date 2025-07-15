@@ -1,6 +1,6 @@
-import { AllImageInfo } from "@/type/ImageInfo"
-import { ImageInfoResponse } from "@/utils/cookies"
+import type { AllImageInfo } from "@/type/ImageInfo";
+import type { ImageInfoResponse } from "@/utils/cookies";
 
-export function isAllImageInfo(obj: ImageInfoResponse): obj is AllImageInfo {
-  return typeof obj !== "string"
+export function isAllImageInfo( obj: ImageInfoResponse ): obj is AllImageInfo {
+    return typeof obj !== "string";
 }

@@ -2,18 +2,18 @@ type Attrs = "unattributed" | "earth" | "wind" | "fire" | "water" | "light" | "d
 type Type = "character" | "weapon"
 
 export interface ImageInfo {
-  id: string
-  attr: Attrs
-  job: number
-  star: number
-  type: Type
+    id: string;
+    attr: Attrs;
+    job: number;
+    star: number;
+    type: Type;
 }
 
 
 export type StarImageData = {
-  [key in number]?: ImageInfo[]
+    [key in number]?: ImageInfo[]
 }
 
 export type AllImageInfo = {
-  [key in Type]?: StarImageData
+    [key in Type]?: StarImageData
 }

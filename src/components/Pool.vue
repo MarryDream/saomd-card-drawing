@@ -1,124 +1,126 @@
 <template>
-  <div class="draw-pool">
-    <div class="pool-title">
-      <label v-for="(item, index) of categoryList" :key="index" class="select-pool">
-        <input type="radio" :value="item.name" v-model="category" @change="poolTitleChange(item.name)"/>
-        <span :class="item.name">{{ `${item.value}(${item.num})` }}</span>
-      </label>
+    <div class="draw-pool">
+        <div class="pool-title">
+            <label v-for="(item, index) of categoryList" :key="index" class="select-pool">
+                <input type="radio" :value="item.name" v-model="category" @change="poolTitleChange(item.name)" />
+                <span :class="item.name">{{ `${ item.value }(${ item.num })` }}</span>
+            </label>
+        </div>
+        <div class="pool">
+            <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
+                <img v-for="(item, index) of poolList" :key="index" class="pools-image"
+                     :class="{ active: item.active, poolTransition: isTransition }"
+                     :src="`https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/pool/${item.name}.png`"
+                     draggable="false" alt="ERROR" />
+            </div>
+            <img v-if="leftArrowFlag" class="arrow left" src="/src/assets/images/icon/arrow.png" draggable="false"
+                 alt="ERROR"
+                 @click="arrowHandle('left')" />
+            <img v-if="rightArrowFlag" class="arrow right" src="/src/assets/images/icon/arrow.png" draggable="false"
+                 alt="ERROR"
+                 @click="arrowHandle('right')" />
+        </div>
+        <button class="details">出現角色一覽/説明</button>
     </div>
-    <div class="pool">
-      <div class="pools" :class="{ poolTransition: isTransition }" ref="poolsRef">
-        <img v-for="(item, index) of poolList" :key="index" class="pools-image"
-             :class="{ active: item.active, poolTransition: isTransition }"
-             :src="`https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/pool/${item.name}.png`" draggable="false" alt="ERROR"/>
-      </div>
-      <img v-if="leftArrowFlag" class="arrow left" src="/src/assets/images/icon/arrow.png" draggable="false" alt="ERROR"
-           @click="arrowHandle('left')"/>
-      <img v-if="rightArrowFlag" class="arrow right" src="/src/assets/images/icon/arrow.png" draggable="false"
-           alt="ERROR"
-           @click="arrowHandle('right')"/>
-    </div>
-    <button class="details">出現角色一覽/説明</button>
-  </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, computed, ref, Ref, toRefs, onMounted, watch, PropType} from "vue"
-import {IPropState, IPoolItem, Category} from "@/type/pool";
+import { defineComponent, reactive, computed, ref, type Ref, toRefs, onMounted, watch } from "vue";
+import type { IPropState, IPoolItem, Category } from "@/type/pool";
 
-export default defineComponent({
-  name: "Pool",
-  emits: ["changePoolType"],
-  setup(props, {emit}) {
-    const state: IPropState = reactive({
-      category: 'all',
-      charaPoolList: [{type: 'character', name: 'chara', active: false}],
-      weaponPoolList: [{type: 'weapon', name: 'weapon', active: false}],
-      allPoolList: [],
-      poolList: [],
-      categoryList: [],
-      activeIndex: 0, // 当前显示的图片在数组中的序号
-      isTransition: false, // 是否拥有过度效果
-      poolType: ''
-    })
+export default defineComponent( {
+    name: "Pool",
+    emits: [ "changePoolType" ],
+    setup( _, { emit } ) {
+        const state: IPropState = reactive( {
+            category: "all",
+            charaPoolList: [ { type: "character", name: "chara", active: false } ],
+            weaponPoolList: [ { type: "weapon", name: "weapon", active: false } ],
+            allPoolList: [],
+            poolList: [],
+            categoryList: [],
+            activeIndex: 0, // 当前显示的图片在数组中的序号
+            isTransition: false, // 是否拥有过度效果
+            poolType: ""
+        } );
 
-    const poolsRef: Ref<HTMLDivElement | null> = ref(null)
+        const poolsRef: Ref<HTMLDivElement | null> = ref( null );
 
-    const leftArrowFlag = computed(() => state.activeIndex !== 0)
-    const rightArrowFlag = computed(() => state.activeIndex !== state.poolList.length - 1)
+        const leftArrowFlag = computed( () => state.activeIndex !== 0 );
+        const rightArrowFlag = computed( () => state.activeIndex !== state.poolList.length - 1 );
 
-    onMounted(() => {
-      state.allPoolList = [...state.charaPoolList, ...state.weaponPoolList]
-      state.poolList = state.allPoolList
-      state.categoryList = [
-        {name: 'all', value: '全部', num: state.allPoolList.length},
-        {name: 'chara', value: '角色', num: state.charaPoolList.length},
-        {name: 'weapon', value: '武器', num: state.weaponPoolList.length}
-      ]
-    })
+        onMounted( () => {
+            state.allPoolList = [ ...state.charaPoolList, ...state.weaponPoolList ];
+            state.poolList = state.allPoolList;
+            state.categoryList = [
+                { name: "all", value: "全部", num: state.allPoolList.length },
+                { name: "chara", value: "角色", num: state.charaPoolList.length },
+                { name: "weapon", value: "武器", num: state.weaponPoolList.length }
+            ];
+        } );
 
-    watch(() => state.poolList, (list: IPoolItem[]) => {
-      state.activeIndex = 0
-      state.poolType = state.poolList[state.activeIndex].type
-      const poolDiv = poolsRef.value
-      if (poolDiv) {
-        poolDiv.style.transform = ''
-        poolDiv.style.width = `width:${(24 + 2) * (state.poolList.length - 1) + 50.7}rem`
-      }
-      initPoolArr(list)
-      setTimeout(() => {
-        state.isTransition = true
-      }, 400)
-    })
+        watch( () => state.poolList, ( list: IPoolItem[] ) => {
+            state.activeIndex = 0;
+            state.poolType = state.poolList[state.activeIndex].type;
+            const poolDiv = poolsRef.value;
+            if ( poolDiv ) {
+                poolDiv.style.transform = "";
+                poolDiv.style.width = `width:${ ( 24 + 2 ) * ( state.poolList.length - 1 ) + 50.7 }rem`;
+            }
+            initPoolArr( list );
+            setTimeout( () => {
+                state.isTransition = true;
+            }, 400 );
+        } );
 
-    function poolTitleChange(name: Category) {
-      state.isTransition = false
-      switch (name) {
-        case 'all':
-          state.poolList = state.allPoolList
-          break
-        case 'chara':
-          state.poolList = state.charaPoolList
-          break
-        case 'weapon':
-          state.poolList = state.weaponPoolList
-          break
-      }
+        function poolTitleChange( name: Category ) {
+            state.isTransition = false;
+            switch ( name ) {
+                case "all":
+                    state.poolList = state.allPoolList;
+                    break;
+                case "chara":
+                    state.poolList = state.charaPoolList;
+                    break;
+                case "weapon":
+                    state.poolList = state.weaponPoolList;
+                    break;
+            }
+        }
+
+        watch( () => state.poolType, ( type: string ) => {
+            emit( "changePoolType", type );
+        } );
+
+        // 左右点击事件
+        function arrowHandle( direct: "left" | "right" ) {
+            state.activeIndex = direct === "left" ? state.activeIndex - 1 : state.activeIndex + 1;
+            state.poolType = state.poolList[state.activeIndex].type;
+            const poolsDiv = poolsRef.value;
+            if ( poolsDiv ) {
+                poolsDiv.style.transform = `translateX(${ -26 * state.activeIndex }rem)`;
+            }
+            initPoolArr( state.poolList );
+        }
+
+        // 切换设置当前卡池active状态
+        function initPoolArr( poolList: IPoolItem[] ) {
+            poolList.forEach( item => {
+                item.active = false;
+            } );
+            poolList[state.activeIndex].active = true;
+        }
+
+        return {
+            ...toRefs( state ),
+            poolsRef,
+            leftArrowFlag,
+            rightArrowFlag,
+            poolTitleChange,
+            arrowHandle
+        };
     }
-
-    watch(() => state.poolType, (type: string) => {
-      emit('changePoolType', type)
-    })
-
-    // 左右点击事件
-    function arrowHandle(direct: "left" | "right") {
-      state.activeIndex = direct === 'left' ? state.activeIndex - 1 : state.activeIndex + 1
-      state.poolType = state.poolList[state.activeIndex].type
-      const poolsDiv = poolsRef.value
-      if (poolsDiv) {
-        poolsDiv.style.transform = `translateX(${-26 * state.activeIndex}rem)`
-      }
-      initPoolArr(state.poolList)
-    }
-
-    // 切换设置当前卡池active状态
-    function initPoolArr(poolList: IPoolItem[]) {
-      poolList.forEach(item => {
-        item.active = false
-      })
-      poolList[state.activeIndex].active = true
-    }
-
-    return {
-      ...toRefs(state),
-      poolsRef,
-      leftArrowFlag,
-      rightArrowFlag,
-      poolTitleChange,
-      arrowHandle
-    }
-  }
-})
+} );
 </script>
 <style lang="scss" scoped>
 .draw-pool {
@@ -133,30 +135,30 @@ export default defineComponent({
     > .select-pool {
       flex: 1;
 
-      > input[type='radio'] {
+      > input[type="radio"] {
         display: none;
       }
 
       &:nth-of-type(1) {
-        > input[type='radio'] {
+        > input[type="radio"] {
           &:checked + span {
-            border-image-source: url('/src/assets/images/icon/all_active.png');
+            border-image-source: url("/src/assets/images/icon/all_active.png");
           }
         }
       }
 
       &:nth-of-type(2) {
-        > input[type='radio'] {
+        > input[type="radio"] {
           &:checked + span {
-            border-image-source: url('/src/assets/images/icon/chara_active.png');
+            border-image-source: url("/src/assets/images/icon/chara_active.png");
           }
         }
       }
 
       &:nth-of-type(3) {
-        > input[type='radio'] {
+        > input[type="radio"] {
           &:checked + span {
-            border-image-source: url('/src/assets/images/icon/weapon_active.png');
+            border-image-source: url("/src/assets/images/icon/weapon_active.png");
           }
         }
       }
@@ -174,17 +176,17 @@ export default defineComponent({
 
       > .all {
         border-width: 1rem 4.1rem 0.5rem 4.2rem;
-        border-image: url('/src/assets/images/icon/all_default.png') 10 41 5 42 fill;
+        border-image: url("/src/assets/images/icon/all_default.png") 10 41 5 42 fill;
       }
 
       > .chara {
         border-width: 1rem 2.7rem 0.5rem 5.6rem;
-        border-image: url('/src/assets/images/icon/chara_default.png') 10 27 5 56 fill;
+        border-image: url("/src/assets/images/icon/chara_default.png") 10 27 5 56 fill;
       }
 
       > .weapon {
         border-width: 1rem 2.7rem 0.5rem 5.6rem;
-        border-image: url('/src/assets/images/icon/weapon_default.png') 10 27 5 56 fill;
+        border-image: url("/src/assets/images/icon/weapon_default.png") 10 27 5 56 fill;
       }
     }
   }

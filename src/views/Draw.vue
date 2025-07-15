@@ -1,122 +1,123 @@
 <template>
-  <div class="draw-container" @contextmenu.prevent>
-    <audio ref="bgmAudio" style="display: none" src="https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/sounds/lottery_bgm.ogg"
-           preload="auto" loop="true"></audio>
-    <div class="draw-base" :class="isPoolPage ? 'pool' : 'package'">
-      <label for="bgmCheckbox" class="diy-checkout">
-        <span>BGM</span>
-        <input id="bgmCheckbox" v-model="bgmPlayState" type="checkbox" @change="changeBgmstate"/>
-        <div class="checkout-box"></div>
-      </label>
-      <div class="draw-contain">
-        <div class="draw-title">
-          <div class="pool-title">
-            <img :src="getAssetsFile(`icon/${isPoolPage ? 'scout' : 'scout result'}.png`)"
-                 :style="{ width: isPoolPage ? '5.4rem' : '11.1rem' }" alt="ERROR" draggable="false"/>
-          </div>
+    <div class="draw-container" @contextmenu.prevent>
+        <audio ref="bgmAudio" style="display: none"
+               src="https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/sounds/lottery_bgm.ogg"
+               preload="auto" loop="true"></audio>
+        <div class="draw-base" :class="isPoolPage ? 'pool' : 'package'">
+            <label for="bgmCheckbox" class="diy-checkout">
+                <span>BGM</span>
+                <input id="bgmCheckbox" v-model="bgmPlayState" type="checkbox" @change="changeBgmstate" />
+                <div class="checkout-box"></div>
+            </label>
+            <div class="draw-contain">
+                <div class="draw-title">
+                    <div class="pool-title">
+                        <img :src="getAssetsFile(`icon/${isPoolPage ? 'scout' : 'scout result'}.png`)"
+                             :style="{ width: isPoolPage ? '5.4rem' : '11.1rem' }" alt="ERROR" draggable="false" />
+                    </div>
+                </div>
+                <Pool v-if="isPoolPage" @changePoolType="changePoolType"></Pool>
+                <Result v-else :poolType="poolType" :drawList="drawList"></Result>
+                <Footer class="footer-box" :poolType="poolType" :pageType="pageType" :allImageInfo="allImageInfo"
+                        @addLottery="addLottery" @changePage="changePage" @changePoolType="changePoolType" />
+                <p class="copyright">
+                    <span>Copyright &copy;{{ new Date().getFullYear() }} 飞鸟茉莉 | </span>
+                    <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2020044886号</a>
+                </p>
+            </div>
         </div>
-        <Pool v-if="isPoolPage" @changePoolType="changePoolType"></Pool>
-        <Result v-else :poolType="poolType" :drawList="drawList"></Result>
-        <Footer class="footer-box" :poolType="poolType" :pageType="pageType" :allImageInfo="allImageInfo"
-                @addLottery="addLottery" @changePage="changePage" @changePoolType="changePoolType"/>
-        <p class="copyright">
-            <span>Copyright &copy;{{ new Date().getFullYear() }} 飞鸟茉莉 | </span>
-            <a href="https://beian.miit.gov.cn/" target="_blank">鲁ICP备2020044886号</a>
-        </p>
-      </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, computed, ComputedRef, ref, Ref, reactive, toRefs} from "vue"
-import Pool from "@/components/Pool.vue"
-import Result from "@/components/Package.vue"
-import Footer from "@/components/DrawFooter.vue"
-import {setAllImageInfo, getAllImageInfo} from "@/utils/cookies"
-import {isAllImageInfo} from "@/type/check"
-import $http from "@/api"
-import {ImageInfo, AllImageInfo} from "@/type/ImageInfo"
-import {IDrawState} from "@/type/draw"
-import {getAssetsFile} from "@/utils/pub-use"
-import {parse} from "yaml";
+import { defineComponent, onMounted, computed, type ComputedRef, ref, type Ref, reactive, toRefs } from "vue";
+import Pool from "@/components/Pool.vue";
+import Result from "@/components/Package.vue";
+import Footer from "@/components/DrawFooter.vue";
+import { setAllImageInfo, getAllImageInfo } from "@/utils/cookies";
+import { isAllImageInfo } from "@/type/check";
+import $http from "@/api";
+import type { ImageInfo, AllImageInfo } from "@/type/ImageInfo";
+import type { IDrawState } from "@/type/draw";
+import { getAssetsFile } from "@/utils/pub-use";
+import { parse } from "yaml";
 
-export default defineComponent({
-  name: "Draw",
-  components: {
-    Pool,
-    Result,
-    Footer
-  },
-  setup() {
-    const state: IDrawState = reactive({
-      poolType: "character",
-      pageType: 1, // 当前页面 2结果页
-      drawList: [],
-      bgmPlayState: false, // bgm播放状态
-      allImageInfo: {}
-    })
+export default defineComponent( {
+    name: "Draw",
+    components: {
+        Pool,
+        Result,
+        Footer
+    },
+    setup() {
+        const state: IDrawState = reactive( {
+            poolType: "character",
+            pageType: 1, // 当前页面 2结果页
+            drawList: [],
+            bgmPlayState: false, // bgm播放状态
+            allImageInfo: {}
+        } );
 
-    // 是否是卡池页
-    const isPoolPage: ComputedRef<boolean> = computed(() => !(state.pageType - 1))
+        // 是否是卡池页
+        const isPoolPage: ComputedRef<boolean> = computed( () => !( state.pageType - 1 ) );
 
-    onMounted(() => {
-      initImgInfo()
-    })
+        onMounted( () => {
+            initImgInfo();
+        } );
 
 
-    function initImgInfo() {
-      // 先从localStory里面获取，若没有再请求
-      const imageInfo = getAllImageInfo()
-      if (isAllImageInfo(imageInfo)) {
-        state.allImageInfo = imageInfo
-        return
-      }
-      $http.GET_IMAGE_INFO({
-        random: new Date().getTime()
-      }, "get").then((res: string) => {
-        state.allImageInfo = (parse(res) as AllImageInfo)
-        // 存放至localstory
-        setAllImageInfo(state.allImageInfo)
-      }).catch((err: any) => {
-        console.log(err || '获取文件失败')
-      })
+        function initImgInfo() {
+            // 先从localStory里面获取，若没有再请求
+            const imageInfo = getAllImageInfo();
+            if ( isAllImageInfo( imageInfo ) ) {
+                state.allImageInfo = imageInfo;
+                return;
+            }
+            $http.GET_IMAGE_INFO( {
+                random: new Date().getTime()
+            }, "get" ).then( ( res: string ) => {
+                state.allImageInfo = ( parse( res ) as AllImageInfo );
+                // 存放至localstory
+                setAllImageInfo( state.allImageInfo );
+            } ).catch( ( err: any ) => {
+                console.log( err || "获取文件失败" );
+            } );
+        }
+
+        function changePoolType( type: ImageInfo["type"] ) {
+            state.poolType = type;
+        }
+
+        function changePage( type: IDrawState["pageType"] ) {
+            state.pageType = type;
+        }
+
+        function addLottery( list: ImageInfo[] ) {
+            state.drawList = list;
+        }
+
+        const bgmAudio: Ref<HTMLMediaElement | null> = ref( null );
+
+        /* 控制播放bgm */
+        function changeBgmstate() {
+            const audio = bgmAudio.value;
+            if ( audio ) {
+                state.bgmPlayState ? audio.play() : audio.pause();
+            }
+        }
+
+        return {
+            ...toRefs( state ),
+            getAssetsFile,
+            bgmAudio,
+            changePoolType,
+            changePage,
+            addLottery,
+            changeBgmstate,
+            isPoolPage
+        };
     }
-
-    function changePoolType(type: ImageInfo["type"]) {
-      state.poolType = type
-    }
-
-    function changePage(type: IDrawState["pageType"]) {
-      state.pageType = type
-    }
-
-    function addLottery(list: ImageInfo[]) {
-      state.drawList = list
-    }
-
-    const bgmAudio: Ref<HTMLMediaElement | null> = ref(null)
-
-    /* 控制播放bgm */
-    function changeBgmstate() {
-      const audio = bgmAudio.value
-      if (audio) {
-        state.bgmPlayState ? audio.play() : audio.pause()
-      }
-    }
-
-    return {
-      ...toRefs(state),
-      getAssetsFile,
-      bgmAudio,
-      changePoolType,
-      changePage,
-      addLottery,
-      changeBgmstate,
-      isPoolPage
-    }
-  }
-})
+} );
 </script>
 
 <style lang="scss" scoped>
@@ -136,7 +137,7 @@ export default defineComponent({
 
       &::before,
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         left: 0;
         top: 0;
@@ -145,12 +146,12 @@ export default defineComponent({
       }
 
       &.pool::before {
-        background: url('https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/background/draw-bg.png') center no-repeat;
+        background: url("https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/background/draw-bg.png") center no-repeat;
         background-size: cover;
       }
 
       &.package::before {
-        background: url('https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/background/bg_result.png') center no-repeat;
+        background: url("https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/background/bg_result.png") center no-repeat;
         background-size: cover;
       }
 
@@ -202,7 +203,7 @@ export default defineComponent({
           overflow: hidden;
 
           &::before {
-            content: '';
+            content: "";
             width: $control-width;
             height: $control-width;
             border-radius: 50%;
@@ -231,7 +232,7 @@ export default defineComponent({
             height: 4.7rem;
             margin-top: 2rem;
             padding-right: 5.1rem;
-            background: url('/src/assets/images/icon/panel.png') no-repeat;
+            background: url("/src/assets/images/icon/panel.png") no-repeat;
             background-size: 23.1rem 4.7rem;
             text-align: center;
 
@@ -245,10 +246,12 @@ export default defineComponent({
         > .footer-box {
           flex: 1;
         }
+
         > .copyright {
           margin: .6rem 0;
           text-align: center;
           color: #fff;
+
           a {
             text-decoration: none;
             color: #fff;
