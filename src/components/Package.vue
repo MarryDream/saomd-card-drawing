@@ -3,16 +3,16 @@
         <div class="pool-contain">
             <div class="card-contain">
                 <div :key="index" v-for="(item, index) in drawList" class="card">
-                    <img class="card-iframe" :src="getAssetsFile(`chara/character_frame_${item.star}.png`)" alt="ERROR"
+                    <img class="card-iframe" :src="`https://s3.marrydream.top/saomd/images/frame/frame_${item.star}.png`" alt="ERROR"
                          draggable="false" />
                     <img class="card-img" :style="cardImgStyle"
                          :src="`https://s3.marrydream.top/saomd/images/items/${item.type}_star${item.star}_job${item.job}_${item.attr}_${item.id}.png`"
                          alt="ERROR" draggable="false" />
                     <div class="attr-box">
-                        <img class="card-attr" :src="getAssetsFile(`attribute/icon_attribute_${item.attr}.png`)"
+                        <img class="card-attr" :src="`https://s3.marrydream.top/saomd/images/attribute/icon_attribute_${item.attr}.png`"
                              alt="ERROR"
                              draggable="false" />
-                        <img class="card-job" :src="getAssetsFile(`job/icon_job_${item.job}.png`)" alt="ERROR"
+                        <img class="card-job" :src="`https://s3.marrydream.top/saomd/images/job/icon_job_${item.job}.png`" alt="ERROR"
                              draggable="false" />
                     </div>
                 </div>
