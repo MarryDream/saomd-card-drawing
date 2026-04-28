@@ -5,11 +5,10 @@ import Result from "@/components/Package.vue";
 import Footer from "@/components/DrawFooter.vue";
 import { getAllImageInfo, setAllImageInfo } from "@/utils/cookies";
 import { isAllImageInfo } from "@/type/check";
-import $http from "@/api";
 import type { AllImageInfo, ImageInfo } from "@/type/ImageInfo";
 import type { PageType } from "@/type/draw";
 import { getAssetsFile } from "@/utils/pub-use";
-import { parse } from "yaml";
+import { requestImageInfo } from "@/api/drawInfo.ts";
 
 defineOptions( {
     name: "Draw"
@@ -28,24 +27,20 @@ onMounted( () => {
     initImgInfo();
 } );
 
-function initImgInfo() {
+async function initImgInfo() {
     // 先从localStory里面获取，若没有再请求
     const imageInfo = getAllImageInfo();
     if ( isAllImageInfo( imageInfo ) ) {
         allImageInfo.value = imageInfo;
         return;
     }
-    $http.GET_IMAGE_INFO( {
-        random: new Date().getTime()
-    }, "get", {
-        responseType: "text"
-    } ).then( ( res: string ) => {
-        allImageInfo.value = ( parse( res ) as AllImageInfo );
-        // 存放至localstory
+    try {
+        allImageInfo.value = await requestImageInfo();
+        // 存放至 localStorage
         setAllImageInfo( allImageInfo.value );
-    } ).catch( ( err: any ) => {
+    } catch ( err ) {
         console.log( err || "获取文件失败" );
-    } );
+    }
 }
 
 function changePoolType( type: ImageInfo["type"] ) {
@@ -97,143 +92,143 @@ function changeBgmstate() {
 
 <style lang="scss" scoped>
 .draw {
-  &-container {
-    height: var(--screenHeight);
-    display: flex;
-    align-items: center;
-    background-color: #000;
-
-    .draw-base {
-      width: var(--baseWidth);
-      height: var(--baseHeight);
-      position: relative;
-      overflow: hidden;
-      user-select: none;
-
-      &::before,
-      &::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      &.pool::before {
-        background: url("https://s3.marrydream.top/saomd/images/background/draw-bg.png") center no-repeat;
-        background-size: cover;
-      }
-
-      &.package::before {
-        background: url("https://s3.marrydream.top/saomd/images/background/bg_result.png") center no-repeat;
-        background-size: cover;
-      }
-
-      &::after {
-        background-color: rgba(0, 0, 0, 0.5);
-        z-index: 1;
-      }
-
-      > .diy-checkout {
-        --background-color-active: #3e83bc;
-        --background-color: #da424e;
+    &-container {
+        height: var(--screenHeight);
         display: flex;
         align-items: center;
-        $width: 8.8rem;
-        $height: 4.2rem;
-        $control-width: $height - 1.5rem;
-        position: absolute;
-        right: 1.5em;
-        top: 1.5em;
-        z-index: 10;
+        background-color: #000;
 
-        > span {
-          margin-right: 0.5em;
-          font-size: 1.6rem;
-          color: #fff;
-        }
+        .draw-base {
+            width: var(--baseWidth);
+            height: var(--baseHeight);
+            position: relative;
+            overflow: hidden;
+            user-select: none;
 
-        #bgmCheckbox {
-          display: none;
-
-          &:checked + .checkout-box {
-            background-color: var(--background-color-active);
-
-            &::before {
-              border: 0.3rem solid var(--background-color-active);
-              transform: translateX($width - $control-width - 1.1rem);
+            &::before,
+            &::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
             }
-          }
-        }
 
-        .checkout-box {
-          width: $width;
-          height: $height;
-          display: flex;
-          align-items: center;
-          border-radius: 2.1rem;
-          background-color: var(--background-color);
-          box-shadow: 0 0 1px rgba(51, 51, 51, 0.3), 0 1px 3px #333 inset, 0 -1px 1px rgba(204, 204, 204, 0.3) inset, 0 -3px 1px rgba(51, 51, 51, 0.3) inset;
-          overflow: hidden;
-
-          &::before {
-            content: "";
-            width: $control-width;
-            height: $control-width;
-            border-radius: 50%;
-            background-color: #fff;
-            border: 0.3rem solid var(--background-color);
-            box-shadow: 0 0 0 0.2rem #fff;
-            transform: translateX(0.5rem);
-            transition: transform 0.2s;
-          }
-        }
-      }
-
-      > .draw-contain {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        position: relative;
-        z-index: 2;
-
-        > .draw-title {
-          height: 8.3rem;
-          overflow: hidden;
-
-          > .pool-title {
-            width: 23.1rem;
-            height: 4.7rem;
-            margin-top: 2rem;
-            padding-right: 5.1rem;
-            background: url("/src/assets/images/icon/panel.png") no-repeat;
-            background-size: 23.1rem 4.7rem;
-            text-align: center;
-
-            > img {
-              height: 3.1rem;
-              margin-top: 0.7rem;
+            &.pool::before {
+                background: url("https://s3.marrydream.top/saomd/images/background/draw-bg.png") center no-repeat;
+                background-size: cover;
             }
-          }
-        }
 
-        > .footer-box {
-          flex: 1;
-        }
+            &.package::before {
+                background: url("https://s3.marrydream.top/saomd/images/background/bg_result.png") center no-repeat;
+                background-size: cover;
+            }
 
-        > .copyright {
-          margin: .6rem 0;
-          text-align: center;
-          color: #fff;
+            &::after {
+                background-color: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+            }
 
-          a {
-            text-decoration: none;
-            color: #fff;
-          }
+            > .diy-checkout {
+                --background-color-active: #3e83bc;
+                --background-color: #da424e;
+                display: flex;
+                align-items: center;
+                $width: 8.8rem;
+                $height: 4.2rem;
+                $control-width: $height - 1.5rem;
+                position: absolute;
+                right: 1.5em;
+                top: 1.5em;
+                z-index: 10;
+
+                > span {
+                    margin-right: 0.5em;
+                    font-size: 1.6rem;
+                    color: #fff;
+                }
+
+                #bgmCheckbox {
+                    display: none;
+
+                    &:checked + .checkout-box {
+                        background-color: var(--background-color-active);
+
+                        &::before {
+                            border: 0.3rem solid var(--background-color-active);
+                            transform: translateX($width - $control-width - 1.1rem);
+                        }
+                    }
+                }
+
+                .checkout-box {
+                    width: $width;
+                    height: $height;
+                    display: flex;
+                    align-items: center;
+                    border-radius: 2.1rem;
+                    background-color: var(--background-color);
+                    box-shadow: 0 0 1px rgba(51, 51, 51, 0.3), 0 1px 3px #333 inset, 0 -1px 1px rgba(204, 204, 204, 0.3) inset, 0 -3px 1px rgba(51, 51, 51, 0.3) inset;
+                    overflow: hidden;
+
+                    &::before {
+                        content: "";
+                        width: $control-width;
+                        height: $control-width;
+                        border-radius: 50%;
+                        background-color: #fff;
+                        border: 0.3rem solid var(--background-color);
+                        box-shadow: 0 0 0 0.2rem #fff;
+                        transform: translateX(0.5rem);
+                        transition: transform 0.2s;
+                    }
+                }
+            }
+
+            > .draw-contain {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+                position: relative;
+                z-index: 2;
+
+                > .draw-title {
+                    height: 8.3rem;
+                    overflow: hidden;
+
+                    > .pool-title {
+                        width: 23.1rem;
+                        height: 4.7rem;
+                        margin-top: 2rem;
+                        padding-right: 5.1rem;
+                        background: url("/src/assets/images/icon/panel.png") no-repeat;
+                        background-size: 23.1rem 4.7rem;
+                        text-align: center;
+
+                        > img {
+                            height: 3.1rem;
+                            margin-top: 0.7rem;
+                        }
+                    }
+                }
+
+                > .footer-box {
+                    flex: 1;
+                }
+
+                > .copyright {
+                    margin: .6rem 0;
+                    text-align: center;
+                    color: #fff;
+
+                    a {
+                        text-decoration: none;
+                        color: #fff;
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }
 </style>
