@@ -1,3 +1,95 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, useTemplateRef, watch } from "vue";
+import type { ImageInfo } from "@/type/ImageInfo";
+import type { Category, ICategoryItem, IPoolItem } from "@/type/pool";
+
+defineOptions( {
+    name: "Pool"
+} );
+
+const emit = defineEmits<{
+    changePoolType: [ type: ImageInfo["type"] ];
+}>();
+
+const category = ref<Category>( "all" );
+const charaPoolList = ref<IPoolItem[]>( [ { type: "character", name: "chara", active: false } ] );
+const weaponPoolList = ref<IPoolItem[]>( [ { type: "weapon", name: "weapon", active: false } ] );
+const allPoolList = ref<IPoolItem[]>( [] );
+const poolList = ref<IPoolItem[]>( [] );
+const categoryList = ref<ICategoryItem[]>( [] );
+const activeIndex = ref( 0 );
+const isTransition = ref( false );
+const poolType = ref<ImageInfo["type"] | "">( "" );
+const poolsRef = useTemplateRef<HTMLDivElement>( "poolsRef" );
+
+const leftArrowFlag = computed( () => activeIndex.value !== 0 );
+const rightArrowFlag = computed( () => activeIndex.value !== poolList.value.length - 1 );
+
+onMounted( () => {
+    allPoolList.value = [ ...charaPoolList.value, ...weaponPoolList.value ];
+    poolList.value = allPoolList.value;
+    categoryList.value = [
+        { name: "all", value: "全部", num: allPoolList.value.length },
+        { name: "chara", value: "角色", num: charaPoolList.value.length },
+        { name: "weapon", value: "武器", num: weaponPoolList.value.length }
+    ];
+} );
+
+watch( poolList, ( list: IPoolItem[] ) => {
+    activeIndex.value = 0;
+    poolType.value = poolList.value[activeIndex.value].type;
+    const poolDiv = poolsRef.value;
+    if ( poolDiv ) {
+        poolDiv.style.transform = "";
+        poolDiv.style.width = `width:${ ( 24 + 2 ) * ( poolList.value.length - 1 ) + 50.7 }rem`;
+    }
+    initPoolArr( list );
+    setTimeout( () => {
+        isTransition.value = true;
+    }, 400 );
+} );
+
+watch( poolType, type => {
+    if ( type ) {
+        emit( "changePoolType", type );
+    }
+} );
+
+function poolTitleChange( name: Category ) {
+    isTransition.value = false;
+    switch ( name ) {
+        case "all":
+            poolList.value = allPoolList.value;
+            break;
+        case "chara":
+            poolList.value = charaPoolList.value;
+            break;
+        case "weapon":
+            poolList.value = weaponPoolList.value;
+            break;
+    }
+}
+
+/* 左右点击事件 */
+function arrowHandle( direct: "left" | "right" ) {
+    activeIndex.value = direct === "left" ? activeIndex.value - 1 : activeIndex.value + 1;
+    poolType.value = poolList.value[activeIndex.value].type;
+    const poolsDiv = poolsRef.value;
+    if ( poolsDiv ) {
+        poolsDiv.style.transform = `translateX(${ -26 * activeIndex.value }rem)`;
+    }
+    initPoolArr( poolList.value );
+}
+
+/* 切换设置当前卡池active状态 */
+function initPoolArr( list: IPoolItem[] ) {
+    list.forEach( item => {
+        item.active = false;
+    } );
+    list[activeIndex.value].active = true;
+}
+</script>
+
 <template>
     <div class="draw-pool">
         <div class="pool-title">
@@ -24,104 +116,6 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, reactive, computed, ref, type Ref, toRefs, onMounted, watch } from "vue";
-import type { IPropState, IPoolItem, Category } from "@/type/pool";
-
-export default defineComponent( {
-    name: "Pool",
-    emits: [ "changePoolType" ],
-    setup( _, { emit } ) {
-        const state: IPropState = reactive( {
-            category: "all",
-            charaPoolList: [ { type: "character", name: "chara", active: false } ],
-            weaponPoolList: [ { type: "weapon", name: "weapon", active: false } ],
-            allPoolList: [],
-            poolList: [],
-            categoryList: [],
-            activeIndex: 0, // 当前显示的图片在数组中的序号
-            isTransition: false, // 是否拥有过度效果
-            poolType: ""
-        } );
-
-        const poolsRef: Ref<HTMLDivElement | null> = ref( null );
-
-        const leftArrowFlag = computed( () => state.activeIndex !== 0 );
-        const rightArrowFlag = computed( () => state.activeIndex !== state.poolList.length - 1 );
-
-        onMounted( () => {
-            state.allPoolList = [ ...state.charaPoolList, ...state.weaponPoolList ];
-            state.poolList = state.allPoolList;
-            state.categoryList = [
-                { name: "all", value: "全部", num: state.allPoolList.length },
-                { name: "chara", value: "角色", num: state.charaPoolList.length },
-                { name: "weapon", value: "武器", num: state.weaponPoolList.length }
-            ];
-        } );
-
-        watch( () => state.poolList, ( list: IPoolItem[] ) => {
-            state.activeIndex = 0;
-            state.poolType = state.poolList[state.activeIndex].type;
-            const poolDiv = poolsRef.value;
-            if ( poolDiv ) {
-                poolDiv.style.transform = "";
-                poolDiv.style.width = `width:${ ( 24 + 2 ) * ( state.poolList.length - 1 ) + 50.7 }rem`;
-            }
-            initPoolArr( list );
-            setTimeout( () => {
-                state.isTransition = true;
-            }, 400 );
-        } );
-
-        function poolTitleChange( name: Category ) {
-            state.isTransition = false;
-            switch ( name ) {
-                case "all":
-                    state.poolList = state.allPoolList;
-                    break;
-                case "chara":
-                    state.poolList = state.charaPoolList;
-                    break;
-                case "weapon":
-                    state.poolList = state.weaponPoolList;
-                    break;
-            }
-        }
-
-        watch( () => state.poolType, ( type: string ) => {
-            emit( "changePoolType", type );
-        } );
-
-        // 左右点击事件
-        function arrowHandle( direct: "left" | "right" ) {
-            state.activeIndex = direct === "left" ? state.activeIndex - 1 : state.activeIndex + 1;
-            state.poolType = state.poolList[state.activeIndex].type;
-            const poolsDiv = poolsRef.value;
-            if ( poolsDiv ) {
-                poolsDiv.style.transform = `translateX(${ -26 * state.activeIndex }rem)`;
-            }
-            initPoolArr( state.poolList );
-        }
-
-        // 切换设置当前卡池active状态
-        function initPoolArr( poolList: IPoolItem[] ) {
-            poolList.forEach( item => {
-                item.active = false;
-            } );
-            poolList[state.activeIndex].active = true;
-        }
-
-        return {
-            ...toRefs( state ),
-            poolsRef,
-            leftArrowFlag,
-            rightArrowFlag,
-            poolTitleChange,
-            arrowHandle
-        };
-    }
-} );
-</script>
 <style lang="scss" scoped>
 .draw-pool {
   height: 60.2rem;

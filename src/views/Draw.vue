@@ -1,3 +1,73 @@
+<script setup lang="ts">
+import { computed, onMounted, ref, useTemplateRef } from "vue";
+import Pool from "@/components/Pool.vue";
+import Result from "@/components/Package.vue";
+import Footer from "@/components/DrawFooter.vue";
+import { getAllImageInfo, setAllImageInfo } from "@/utils/cookies";
+import { isAllImageInfo } from "@/type/check";
+import $http from "@/api";
+import type { AllImageInfo, ImageInfo } from "@/type/ImageInfo";
+import type { PageType } from "@/type/draw";
+import { getAssetsFile } from "@/utils/pub-use";
+import { parse } from "yaml";
+
+defineOptions( {
+    name: "Draw"
+} );
+
+const poolType = ref<ImageInfo["type"]>( "character" );
+const pageType = ref<PageType>( 1 ); // 当前页面 2结果页
+const drawList = ref<ImageInfo[]>( [] );
+const bgmPlayState = ref( false ); // bgm播放状态
+const allImageInfo = ref<AllImageInfo>( {} );
+
+const isPoolPage = computed( () => !( pageType.value - 1 ) );
+const bgmAudio = useTemplateRef<HTMLMediaElement>( "bgmAudio" );
+
+onMounted( () => {
+    initImgInfo();
+} );
+
+function initImgInfo() {
+    // 先从localStory里面获取，若没有再请求
+    const imageInfo = getAllImageInfo();
+    if ( isAllImageInfo( imageInfo ) ) {
+        allImageInfo.value = imageInfo;
+        return;
+    }
+    $http.GET_IMAGE_INFO( {
+        random: new Date().getTime()
+    }, "get", {
+        responseType: "text"
+    } ).then( ( res: string ) => {
+        allImageInfo.value = ( parse( res ) as AllImageInfo );
+        // 存放至localstory
+        setAllImageInfo( allImageInfo.value );
+    } ).catch( ( err: any ) => {
+        console.log( err || "获取文件失败" );
+    } );
+}
+
+function changePoolType( type: ImageInfo["type"] ) {
+    poolType.value = type;
+}
+
+function changePage( type: PageType ) {
+    pageType.value = type;
+}
+
+function addLottery( list: ImageInfo[] ) {
+    drawList.value = list;
+}
+
+function changeBgmstate() {
+    const audio = bgmAudio.value;
+    if ( audio ) {
+        bgmPlayState.value ? audio.play() : audio.pause();
+    }
+}
+</script>
+
 <template>
     <div class="draw-container" @contextmenu.prevent>
         <audio ref="bgmAudio" style="display: none"
@@ -24,99 +94,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, onMounted, computed, type ComputedRef, ref, type Ref, reactive, toRefs } from "vue";
-import Pool from "@/components/Pool.vue";
-import Result from "@/components/Package.vue";
-import Footer from "@/components/DrawFooter.vue";
-import { setAllImageInfo, getAllImageInfo } from "@/utils/cookies";
-import { isAllImageInfo } from "@/type/check";
-import $http from "@/api";
-import type { ImageInfo, AllImageInfo } from "@/type/ImageInfo";
-import type { IDrawState } from "@/type/draw";
-import { getAssetsFile } from "@/utils/pub-use";
-import { parse } from "yaml";
-
-export default defineComponent( {
-    name: "Draw",
-    components: {
-        Pool,
-        Result,
-        Footer
-    },
-    setup() {
-        const state: IDrawState = reactive( {
-            poolType: "character",
-            pageType: 1, // 当前页面 2结果页
-            drawList: [],
-            bgmPlayState: false, // bgm播放状态
-            allImageInfo: {}
-        } );
-
-        // 是否是卡池页
-        const isPoolPage: ComputedRef<boolean> = computed( () => !( state.pageType - 1 ) );
-
-        onMounted( () => {
-            initImgInfo();
-        } );
-
-
-        function initImgInfo() {
-            // 先从localStory里面获取，若没有再请求
-            const imageInfo = getAllImageInfo();
-            if ( isAllImageInfo( imageInfo ) ) {
-                state.allImageInfo = imageInfo;
-                return;
-            }
-            $http.GET_IMAGE_INFO( {
-                random: new Date().getTime()
-            }, "get", {
-                responseType: "text"
-            } ).then( ( res: string ) => {
-                state.allImageInfo = ( parse( res ) as AllImageInfo );
-                // 存放至localstory
-                setAllImageInfo( state.allImageInfo );
-            } ).catch( ( err: any ) => {
-                console.log( err || "获取文件失败" );
-            } );
-        }
-
-        function changePoolType( type: ImageInfo["type"] ) {
-            state.poolType = type;
-        }
-
-        function changePage( type: IDrawState["pageType"] ) {
-            state.pageType = type;
-        }
-
-        function addLottery( list: ImageInfo[] ) {
-            state.drawList = list;
-        }
-
-        const bgmAudio: Ref<HTMLMediaElement | null> = ref( null );
-
-        /* 控制播放bgm */
-        function changeBgmstate() {
-            const audio = bgmAudio.value;
-            if ( audio ) {
-                state.bgmPlayState ? audio.play() : audio.pause();
-            }
-        }
-
-        return {
-            ...toRefs( state ),
-            getAssetsFile,
-            bgmAudio,
-            changePoolType,
-            changePage,
-            addLottery,
-            changeBgmstate,
-            isPoolPage
-        };
-    }
-} );
-</script>
 
 <style lang="scss" scoped>
 .draw {

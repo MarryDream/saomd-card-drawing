@@ -1,3 +1,84 @@
+<script setup lang="ts">
+import { onBeforeUnmount, onMounted, ref } from "vue";
+import draw, { type DrawTime } from "@/utils/draw";
+import type { AllImageInfo, ImageInfo } from "@/type/ImageInfo";
+import type { IFooterState, ImageState } from "@/type/footer";
+import type { PageType } from "@/type/draw";
+import { getAssetsFile } from "@/utils/pub-use";
+
+defineOptions( {
+    name: "DrawFooter"
+} );
+
+const props = withDefaults( defineProps<{
+    poolType?: ImageInfo["type"];
+    pageType?: PageType;
+    // 全部图片信息
+    allImageInfo?: AllImageInfo;
+}>(), {
+    poolType: "character",
+    pageType: 1,
+    allImageInfo: () => ( {} )
+} );
+
+const emit = defineEmits<{
+    addLottery: [ list: ImageInfo[] ];
+    changePoolType: [ type: ImageInfo["type"] ];
+    changePage: [ type: PageType ];
+}>();
+
+const oneImg = ref<ImageState>( 1 );
+const elevenImg = ref<ImageState>( 1 );
+
+/* 全局监控鼠标谈起事件，还原图片状态 */
+function imgButton() {
+    if ( oneImg.value === 1 && elevenImg.value === 1 ) return;
+    oneImg.value = 1;
+    elevenImg.value = 1;
+}
+
+onMounted( () => {
+    window.addEventListener( "mouseup", imgButton );
+    window.addEventListener( "touchend", imgButton );
+    window.addEventListener( "touchcancel", imgButton );
+} );
+
+onBeforeUnmount( () => {
+    window.removeEventListener( "mouseup", imgButton );
+    window.removeEventListener( "touchend", imgButton );
+    window.removeEventListener( "touchcancel", imgButton );
+} );
+
+/* 鼠标按下时修改图片样式 */
+function lotteryBtnDown( e: MouseEvent, type: keyof IFooterState ) {
+    // 按下了左键
+    if ( e.button === 0 ) {
+        setButtonImage( type, 2 );
+    }
+    return false;
+}
+
+function setButtonImage( type: keyof IFooterState, value: ImageState ) {
+    if ( type === "oneImg" ) {
+        oneImg.value = value;
+    } else {
+        elevenImg.value = value;
+    }
+}
+
+/* 抽卡方法 */
+function lotteryDraw( time: DrawTime = 1 ) {
+    emit( "addLottery", draw( props.allImageInfo, props.poolType, time ) );
+    emit( "changePoolType", props.poolType );
+    emit( "changePage", 2 );
+}
+
+/* 返回卡池页 */
+function backToPoll() {
+    emit( "changePage", 1 );
+}
+</script>
+
 <template>
     <div class="saomd-footer">
         <div v-if="poolType" class="footer-lottery-btn">
@@ -20,90 +101,6 @@
     </div>
 </template>
 
-<script lang="ts">
-import { defineComponent, onMounted, onBeforeUnmount, type PropType, reactive, toRefs } from "vue";
-import draw, { type DrawTime } from "@/utils/draw";
-import type { AllImageInfo, ImageInfo } from "@/type/ImageInfo";
-import type { IFooterState } from "@/type/footer";
-import type { PageType } from "@/type/draw";
-import { getAssetsFile } from "@/utils/pub-use";
-
-export default defineComponent( {
-    name: "DrawFooter",
-    emits: [ "addLottery", "changePoolType", "changePage" ],
-    props: {
-        poolType: {
-            type: String as PropType<ImageInfo["type"]>,
-            default: "character"
-        },
-        pageType: {
-            type: Number as PropType<PageType>,
-            default: 1
-        },
-        /* 全部图片信息 */
-        allImageInfo: {
-            type: Object as PropType<AllImageInfo>,
-            default: () => {
-                return {};
-            }
-        }
-    },
-    setup( props, { emit } ) {
-        const state: IFooterState = reactive( {
-            oneImg: 1,
-            elevenImg: 1
-        } );
-
-        /* 全局监控鼠标谈起事件，还原图片状态 */
-        function imgButton() {
-            if ( state.oneImg === 1 && state.elevenImg === 1 ) return;
-            [ state.oneImg, state.elevenImg ] = [ 1, 1 ];
-        }
-
-        onMounted( () => {
-            window.addEventListener( "mouseup", imgButton );
-            window.addEventListener( "touchend", imgButton );
-            window.addEventListener( "touchcancel", imgButton );
-        } );
-
-        onBeforeUnmount( () => {
-            window.removeEventListener( "mouseup", imgButton );
-            window.removeEventListener( "touchend", imgButton );
-            window.removeEventListener( "touchcancel", imgButton );
-        } );
-
-        /* 鼠标按下时修改图片样式 */
-        function lotteryBtnDown( e: MouseEvent, type: keyof IFooterState ) {
-            /* 按下了左键 */
-            if ( e.button === 0 ) {
-                state[type] = 2;
-            }
-            return false;
-        }
-
-        /* 抽卡方法 */
-        function lotteryDraw( time: DrawTime = 1 ) {
-            emit( "addLottery", draw( props.allImageInfo, props.poolType, time ) );
-            emit( "changePoolType", props.poolType );
-            emit( "changePage", 2 );
-        }
-
-        /* 返回卡池页 */
-        function backToPoll() {
-            emit( "changePage", 1 );
-        }
-
-        return {
-            ...toRefs( state ),
-            getAssetsFile,
-            lotteryBtnDown,
-            lotteryDraw,
-            backToPoll
-        };
-    }
-} );
-</script>
-
 <style lang="scss" scoped>
 .saomd-footer {
   position: relative;
@@ -124,7 +121,6 @@ export default defineComponent( {
     }
   }
 
-  /* 只是个抽卡网站，没那水平做私服 */
   .footer-navigator-btn {
     position: absolute;
     bottom: 0;

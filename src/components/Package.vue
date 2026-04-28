@@ -1,3 +1,32 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import type { ImageInfo } from "@/type/ImageInfo";
+
+defineOptions( {
+    name: "Package"
+} );
+
+const props = withDefaults( defineProps<{
+    poolType?: ImageInfo["type"];
+    drawList?: ImageInfo[];
+}>(), {
+    poolType: "character",
+    drawList: () => []
+} );
+
+const cardImgStyle = computed( () => {
+    return props.poolType === "character" ? {
+        width: "11.3rem",
+        left: "0.5rem",
+        top: "1.2rem"
+    } : {
+        width: "10.3rem",
+        left: "0.9rem",
+        top: "1.8rem"
+    };
+} );
+</script>
+
 <template>
     <div class="result-pool">
         <div class="pool-contain">
@@ -20,45 +49,6 @@
         </div>
     </div>
 </template>
-
-<script lang="ts">
-import { defineComponent, computed, type PropType } from "vue";
-import type { ImageInfo } from "@/type/ImageInfo";
-import { getAssetsFile } from "@/utils/pub-use";
-
-export default defineComponent( {
-    name: "Package",
-    props: {
-        poolType: {
-            type: String as PropType<ImageInfo["type"]>,
-            default: "character"
-        },
-        // 抽卡结果列表
-        drawList: {
-            type: Array as PropType<ImageInfo[]>,
-            default: () => []
-        }
-    },
-    setup( props ) {
-        const cardImgStyle = computed( () => {
-            return props.poolType === "character" ? {
-                width: "11.3rem",
-                left: "0.5rem",
-                top: "1.2rem"
-            } : {
-                width: "10.3rem",
-                left: "0.9rem",
-                top: "1.8rem"
-            };
-        } );
-
-        return {
-            getAssetsFile,
-            cardImgStyle
-        };
-    }
-} );
-</script>
 
 <style lang="scss" scoped>
 .result-pool {
