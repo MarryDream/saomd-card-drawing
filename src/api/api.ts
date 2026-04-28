@@ -3,7 +3,7 @@ export interface IApis {
 }
 
 const apis: IApis = {
-    GET_IMAGE_INFO: "https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/docs/drawInfo.yml"
+    GET_IMAGE_INFO: "https://s3.marrydream.top/saomd/config/drawInfo.yml"
 };
 
 export default apis;

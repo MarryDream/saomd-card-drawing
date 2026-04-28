@@ -1,7 +1,7 @@
 <template>
     <div class="draw-container" @contextmenu.prevent>
         <audio ref="bgmAudio" style="display: none"
-               src="https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/sounds/lottery_bgm.ogg"
+               src="https://s3.marrydream.top/saomd/sounds/lottery_bgm.ogg"
                preload="auto" loop="true"></audio>
         <div class="draw-base" :class="isPoolPage ? 'pool' : 'package'">
             <label for="bgmCheckbox" class="diy-checkout">
@@ -142,12 +142,12 @@ export default defineComponent( {
       }
 
       &.pool::before {
-        background: url("https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/background/draw-bg.png") center no-repeat;
+        background: url("https://s3.marrydream.top/saomd/images/background/draw-bg.png") center no-repeat;
         background-size: cover;
       }
 
       &.package::before {
-        background: url("https://mari-files.oss-cn-beijing.aliyuncs.com/saomd-card-draw/images/background/bg_result.png") center no-repeat;
+        background: url("https://s3.marrydream.top/saomd/images/background/bg_result.png") center no-repeat;
         background-size: cover;
       }
 
