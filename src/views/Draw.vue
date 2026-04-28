@@ -71,7 +71,9 @@ export default defineComponent( {
             }
             $http.GET_IMAGE_INFO( {
                 random: new Date().getTime()
-            }, "get" ).then( ( res: string ) => {
+            }, "get", {
+                responseType: "text"
+            } ).then( ( res: string ) => {
                 state.allImageInfo = ( parse( res ) as AllImageInfo );
                 // 存放至localstory
                 setAllImageInfo( state.allImageInfo );
