@@ -31,7 +31,7 @@ const cardImgStyle = computed( () => {
     <div class="result-pool">
         <div class="pool-contain">
             <div class="background-icon"></div>
-            <div class="card-contain">
+            <div class="card-contain" :class="{ 'is-single': drawList.length === 1 }">
                 <div :key="index" v-for="(item, index) in drawList" class="card">
                     <img class="card-iframe"
                          :src="`https://s3.marrydream.top/saomd/images/frame/frame_${item.star}.png`" alt="ERROR"
@@ -111,23 +111,28 @@ const cardImgStyle = computed( () => {
         }
 
         .card-contain {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: repeat(4, 12rem);
+            grid-auto-rows: 13.6rem;
             justify-content: center;
-            align-items: center;
+            align-content: center;
+            place-items: center;
+
             position: relative;
+            width: 100%;
+            height: 100%;
+
+            &.is-single {
+                grid-template-columns: 12rem;
+            }
 
             .card {
                 width: 12rem;
                 height: 13.6rem;
                 position: relative;
-                margin: 0.1rem -0.1rem;
+                margin: 0;
                 background: url("/src/assets/images/icon/card_bg.png") 0.9rem 1.2rem no-repeat;
                 background-size: 10.4rem 11.6rem;
-
-                &:last-child {
-                    margin-right: 11.4rem;
-                }
 
                 .attr-box {
                     width: 2.8rem;
