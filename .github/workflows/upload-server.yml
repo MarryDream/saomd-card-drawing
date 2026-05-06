@@ -1,4 +1,4 @@
-name: Deploy Draw
+name: Deploy to Server
 
 on:
   push:
@@ -6,7 +6,8 @@ on:
       - master
 
 jobs:
-  build-and-deploy:
+  deploy-server:
+    name: Build and deploy to server
     runs-on: ubuntu-latest
 
     steps:
